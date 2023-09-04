@@ -1,10 +1,11 @@
 import Data.Time
 import Paciente
---import Medico
+import Medico
 
 data Consulta = Consulta {
     consultaId :: Int,
-    paciente :: Paciente,
-    --medico :: Medico,
+    role :: a,
+    medico :: Maybe Medico,
+    paciente :: Maybe Paciente,
     dataHora :: UTCTime
     }
