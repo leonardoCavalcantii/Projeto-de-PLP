@@ -4,8 +4,8 @@ import Medico
 
 data Consulta = Consulta {
     consultaId :: Int,
-    role :: a,
-    medico :: Maybe Medico,
-    paciente :: Maybe Paciente,
+    --role :: a,
+    medico :: Medico,
+    paciente :: Paciente,
     dataHora :: UTCTime
     }
