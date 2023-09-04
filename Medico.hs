@@ -6,7 +6,7 @@ data Medico = Medico {
     especialidade :: String,
     contato :: String,
     horarioDeAtendimento :: String,
-    feedback :: [(Paciente, String)]
+    feedback :: [(Paciente, String, Int)]
 
     } deriving Show
 
