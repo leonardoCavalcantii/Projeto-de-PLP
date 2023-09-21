@@ -1,4 +1,3 @@
 Paciente {nome = "anonimo", cpf = "999.999.999-99", endereco = "minha casa", contato = "83 99999-9999", peso = "99", altura = "1,99", idade = "99", frh = "O+", emailPaciente = "anonimo@email.com", senhaPaciente = "999999"}
 Paciente {nome = "fulano", cpf = "123.123.123-23", endereco = "numa casa", contato = "83 90909-9090", peso = "99", altura = "2,10", idade = "34", frh = "O-", emailPaciente = "fulano@email.com", senhaPaciente = "123123"}
 Paciente {nome = "teste", cpf = "333.333.333-33", endereco = "lugar teste", contato = "83 333.333.333", peso = "33", altura = "1,33", idade = "33", frh = "O+", emailPaciente = "teste@email.com", senhaPaciente = "3333"}
-Paciente {nome = "mano", cpf = "444.444.444-44", endereco = "mano casa", contato = "83 444.444.444", peso = "44", altura = "1,44", idade = "44", frh = "O+", emailPaciente = "mano@emai.com", senhaPaciente = "4444"}

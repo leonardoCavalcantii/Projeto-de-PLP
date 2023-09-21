@@ -1,2 +1,1 @@
-Agendamento {agendamentoId = "CS-ConsultaNeurologista-210923-Anonimo", dataAgendamento = "21/09/2023", servicos = "Aferir press\227o cerebral", concluido = False, nomePacienteAgendado = "anonimo", emailDoPaciente = "anonimo@email.com"}
-Agendamento {agendamentoId = "CS-ExameDeSangue-210923-Fulano", dataAgendamento = "21/09/2023", servicos = "Coleta de Sangue", concluido = False, nomePacienteAgendado = "Fulano", emailDoPaciente = "fulano@email.com"}
+Agendamento {agendamentoId = "CS-ConsultaOrtopedista-21092023-Anonimo", dataAgendamento = "21/09/2023", servicos = "Corre\231\227o de postura", status = False, nomePacienteAgendado = "anonimo", emailDoPaciente = "anonimo@email.com", nomeDoMedico = "doutorzin", emailDoMedico = "doutorzin@email.com"}

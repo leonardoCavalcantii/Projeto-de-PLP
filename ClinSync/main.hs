@@ -622,7 +622,7 @@ agendarConsulta email = do
     then do
       file <- appendFile "agendamentos.txt" (show agendamento ++ "\n")
       putStrLn "Agendamento feito com sucesso!"
-      menuPaciente
+      segundoMenuPaciente email
     else do
       file <- writeFile "agendamentos.txt" (show agendamento ++ "\n")
       putStrLn "Agendamento feito com sucesso!"
