@@ -494,38 +494,37 @@ atualizarPaciente = do
       putStrLn "Arquivo 'pacientes.txt' não encontrado. Certifique-se de cadastrar pacientes antes de atualizar."
       menuPaciente
 -------------------------------------OperaçõesPaciente-------------------------------------
-
 cadastraPaciente :: IO ()
 cadastraPaciente = do
   putStrLn "\nDigite seus dados pessoais:"
-  putStr "Nome: "
+  putStrLn "Nome: "
   nome <- getLine
 
-  putStr "CPF: "
+  putStrLn "CPF: "
   cpf <- getLine
 
-  putStr "Endereço: "
+  putStrLn "Endereço: "
   endereco <- getLine
 
-  putStr "Número de Contato: "
+  putStrLn "Número de Contato: "
   contato <- getLine
 
-  putStr "Peso: "
+  putStrLn "Peso: "
   peso <- getLine
 
-  putStr "Altura: "
+  putStrLn "Altura: "
   altura <- getLine
 
-  putStr "Idade: "
+  putStrLn "Idade: "
   idade <- getLine
 
-  putStr "Fator RH: "
+  putStrLn "Fator RH: "
   frh <- getLine
 
-  putStr "Email: "
+  putStrLn "Email: "
   email <- getLine
 
-  putStr "Senha: "
+  putStrLn "Senha: "
   senha <- getLine
 
   let paciente = Paciente nome cpf endereco contato peso altura idade frh email senha
