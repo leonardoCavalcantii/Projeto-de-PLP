@@ -1,0 +1,1 @@
+Medico {nomeMedico = "Doutorzin", especialidade = "Curar", crm = "23424-04", telefoneMedico = "83 91111-1111", emailMedico = "doutorzin@email.com", senhaMedico = "111111"}

@@ -1,0 +1,1 @@
+Agendamento {agendamentoId = "CS-ConsultaNeurologista-210923-Anonimo", dataAgendamento = "21/09/2023", servicos = "Aferir press\227o cerebral", concluido = False, nomePacienteAgendado = "anonimo", emailDoPaciente = "anonimo@email.com"}
