@@ -201,8 +201,8 @@ segundoMenuPaciente email = do
   putStrLn "1 - Agendar Consulta"
   putStrLn "2 - Visualizar Agendamentos Fechados"
   putStrLn "3 - Visualizar Agendamentos Abertos"
-  putStrLn "4 - Visualizar Perfil Médico"
-  putStrLn "5 - Cancelar agendamento"
+  ---putStrLn "4 - Visualizar Perfil Médico"
+  ---putStrLn "5 - Cancelar agendamento"
   putStrLn "0 - Voltar"
   printLine
   putStr "Opção: "
@@ -215,7 +215,7 @@ segundaTelaPaciente x email
   | x == "2" = agendamentosConcluidos True email
   | x == "3" = agendamentosConcluidos False email
 ---  | x == "4" = verPerfilMedico
-  | x == "5" = cancelarAgendamento email
+---  | x == "5" = cancelarAgendamento email
   | x == "0" = menuPaciente
   | otherwise = invalidOption (segundoMenuPaciente email)
 
