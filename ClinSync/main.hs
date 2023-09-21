@@ -5,6 +5,7 @@
 
 import Data.Char (toLower)
 import System.Directory (doesFileExist, removeFile)
+import Control.Exception (bracket)
 import System.IO
   ( IO,
     IOMode (ReadMode, ReadWriteMode, WriteMode),
@@ -35,7 +36,7 @@ data Paciente = Paciente
     peso :: String,
     altura :: String,
     idade :: String,
-    frh :: String,
+    grupoSanguineo :: String,
     emailPaciente :: String,
     senhaPaciente :: String
   }
@@ -182,7 +183,7 @@ menuAdm = do
   putStrLn "5 - Alterar Status de um agendamento"
   putStrLn "6 - Listar resumo de agendamentos"
   putStrLn "7 - Atualizar contato Adm"
-  putStrLn "8 - Visualizar agendamentos pendentes"
+---  putStrLn "8 - Visualizar agendamentos pendentes"
   putStrLn "0 - Voltar"
   printLine
   putStr "Opção: "
@@ -274,7 +275,7 @@ segundoMenuMedico email = do
   printLine
   putStrLn "\nSelecione uma opção:\n"
   ---putStrLn "1 - Visualizar Agendamentos"
-  putStrLn "2 - Cancelar agendamento"
+  putStrLn "1 - Cancelar agendamento"
   putStrLn "0 - Voltar"
   printLine
   putStr "Opção: "
@@ -566,8 +567,8 @@ cadastraPaciente = do
   putStrLn "Idade: "
   idade <- getLine
 
-  putStrLn "Fator RH: "
-  frh <- getLine
+  putStrLn "Grupo Sanguíneo: "
+  grupoSanguineo <- getLine
 
   putStrLn "Email: "
   email <- getLine
@@ -575,7 +576,7 @@ cadastraPaciente = do
   putStrLn "Senha: "
   senha <- getLine
 
-  let paciente = Paciente nome cpf endereco contato peso altura idade frh email senha
+  let paciente = Paciente nome cpf endereco contato peso altura idade grupoSanguineo email senha
 
   pacientesCadastrados <- doesFileExist "pacientes.txt"
 
@@ -638,7 +639,7 @@ agendarConsulta email = do
   servicos <- getLine
 
   putStr "Digite o nome do seu agendamento no formato (CS-nomeDoAgendamento-data-seuNome)"
-  putStrLn "\nExemplo: CS-ConsultaEndocrinologista-200923-Adm"
+  putStrLn "\nExemplo: CS-ConsultaEndocrinologista-20/09/2023-Adm"
   id <- getLine
 
   putStrLn ""
@@ -787,7 +788,7 @@ obterAdmin Admin {nomeAdmin = n, senhaAdmin = s, telefoneAdmin = t} prop
   | prop == "telefone" = t
 
 obterPaciente :: Paciente -> String -> String
-obterPaciente Paciente {nome = nome, cpf = cpf, endereco = endereco, contato = contato, peso = peso, altura = altura, idade = idade, frh = frh, emailPaciente = email, senhaPaciente = senha} prop
+obterPaciente Paciente {nome = nome, cpf = cpf, endereco = endereco, contato = contato, peso = peso, altura = altura, idade = idade, grupoSanguineo = grupoSanguineo, emailPaciente = email, senhaPaciente = senha} prop
   | prop == "nome" = nome
   | prop == "cpf" = cpf
   | prop == "endereco" = endereco
@@ -796,7 +797,7 @@ obterPaciente Paciente {nome = nome, cpf = cpf, endereco = endereco, contato = c
   | prop == "peso" = peso
   | prop == "altura" = altura
   | prop == "idade" = idade
-  | prop == "frh" = frh
+  | prop == "GrupoSanguineo" = grupoSanguineo
   | prop == "senhaPaciente" = senha
   | otherwise = "Propriedade não encontrada"
 
@@ -820,7 +821,7 @@ obterAgendamento Agendamento {agendamentoId = id, dataAgendamento = dataAgendame
   | otherwise = "Propriedade não encontrada"
 
 obterEmailPaciente :: Paciente -> String
-obterEmailPaciente Paciente {nome = nome, cpf = cpf, endereco = endereco, contato = contato, emailPaciente = email, peso = peso, altura = altura, idade = idade, frh = frh, senhaPaciente = senha} = email
+obterEmailPaciente Paciente {nome = nome, cpf = cpf, endereco = endereco, contato = contato, emailPaciente = email, peso = peso, altura = altura, idade = idade, grupoSanguineo = grupoSanguineo, senhaPaciente = senha} = email
 
 obterEmailMedico :: Medico -> String
 obterEmailMedico Medico {nomeMedico = nome, especialidade = especialidade, crm = crm, telefoneMedico = contato, emailMedico = email, senhaMedico = senha} = email

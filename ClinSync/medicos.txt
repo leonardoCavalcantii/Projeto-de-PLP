@@ -1,1 +1,2 @@
-Medico {nomeMedico = "Doutorzin", especialidade = "Curar", crm = "23424-04", telefoneMedico = "83 91111-1111", emailMedico = "doutorzin@email.com", senhaMedico = "111111"}
+Medico {nomeMedico = "Doutorzin", especialidade = "Ortojuntista", crm = "34324-09", telefoneMedico = "83 901312-1239", emailMedico = "doutorzin@email", senhaMedico = "121212"}
+Medico {nomeMedico = "Doutor", especialidade = "Clinico", crm = "12312-00", telefoneMedico = "83 123213-312", emailMedico = "doutor@email.com", senhaMedico = "4343"}
