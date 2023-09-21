@@ -299,7 +299,7 @@ verMedicosCadastrados = do
   menuAdm
 
 imprimeMedicosCadastrados :: [Medico] -> Int -> IO ()
-imprimeMedicosCadastrados [] 0 = putStrLn "\nNenhum médico encontrado!"
+imprimeMedicosCadastrados [] 1 = putStrLn "\nNenhum médico encontrado!"
 imprimeMedicosCadastrados [] _ = putStrLn "\nMédicos Listados com Sucesso!"
 imprimeMedicosCadastrados (x : xs) n = do
   putStrLn (show n ++ " - " ++ obterNomesMedicos x)
