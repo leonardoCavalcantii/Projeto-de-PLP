@@ -1,2 +1,0 @@
-Paciente {nome = "Anonimo", cpf = "999.999.999-99", endereco = "uma casa", contato = "83 28323-3333", peso = "99", altura = "1.99", idade = "88", grupoSanguineo = "O+", emailPaciente = "anonimo@email", senhaPaciente = "9999"}
-Paciente {nome = "Emanuel", cpf = "13123123-32", endereco = "uma casa", contato = "831231233", peso = "123", altura = "1.00", idade = "23", grupoSanguineo = "O-", emailPaciente = "emanuel@email", senhaPaciente = "1212"}

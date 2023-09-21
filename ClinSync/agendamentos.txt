@@ -1,2 +1,0 @@
-Agendamento {agendamentoId = "CS-JuntaJunta_22/02/2023-Anonimo", dataAgendamento = "22/02/2023", servicos = "Juntar juntas", status = False, nomePacienteAgendado = "Anonimo", emailDoPaciente = "anonimo@email", nomeDoMedico = "Doutorzin", emailDoMedico = "doutorzin@email.com"}
-Agendamento {agendamentoId = "CS-Consulta-23/03/2024-Emanuel", dataAgendamento = "23/03/2024", servicos = "Consulta", status = False, nomePacienteAgendado = "Emanuel", emailDoPaciente = "emanuel@email", nomeDoMedico = "Doutorzin", emailDoMedico = "doutorzon@email"}
