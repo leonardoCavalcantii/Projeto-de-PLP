@@ -1,0 +1,1 @@
+Paciente {nome = "anonimo", cpf = "999.999.999-99", endereco = "minha casa", contato = "83 99999-9999", peso = "99", altura = "1,99", idade = "99", frh = "O+", emailPaciente = "anonimo@email.com", senhaPaciente = "999999"}

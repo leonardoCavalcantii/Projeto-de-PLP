@@ -583,8 +583,8 @@ agendarConsulta email = do
   putStr "Quais são os serviços para este agendamento? "
   servicos <- getLine
 
-  putStr "Digite o nome do seu agendamento no formato: 'CS-nomeDoAgendamento-data-seuNome'"
-  putStrLn "Exemplo: CS-ConsultaEndocrinologista-200923-Adm"
+  putStr "Digite o nome do seu agendamento no formato (CS-nomeDoAgendamento-data-seuNome)"
+  putStrLn "\nExemplo: CS-ConsultaEndocrinologista-200923-Adm"
   id <- getLine
 
   putStrLn ""
