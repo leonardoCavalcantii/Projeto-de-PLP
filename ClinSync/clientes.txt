@@ -1,4 +1,0 @@
-Cliente {nomeCliente = "emanuel", email = "limaemanuel06@gmail.com", senha = "12345", telefone = "83998142566"}
-Cliente {nomeCliente = "lucas", email = "lucas@hotmail.com", senha = "1122334455", telefone = "83991262563"}
-Cliente {nomeCliente = "lucas silva", email = "lucassilva2@gmail.com", senha = "3214567", telefone = "83925818798"}
-Cliente {nomeCliente = "Emanuel", email = "emanuel0556@gmail.com", senha = "limaelima10", telefone = "83955829790"}

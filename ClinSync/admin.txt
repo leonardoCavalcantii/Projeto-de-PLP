@@ -1,1 +1,0 @@
-Admin {nomeAdmin = "Administrador", senhaAdmin = "123456", telefoneAdmin = "12312345645"}
