@@ -244,7 +244,7 @@ segundoMenuMedico :: String -> IO ()
 segundoMenuMedico email = do
   printLine
   putStrLn "\nSelecione uma opção:\n"
-  putStrLn "1 - Visualizar Agendamentos"
+  ---putStrLn "1 - Visualizar Agendamentos"
   putStrLn "2 - Cancelar agendamento"
   putStrLn "0 - Voltar"
   printLine
@@ -255,7 +255,7 @@ segundoMenuMedico email = do
 segundaTelaMedico :: String -> String -> IO ()
 segundaTelaMedico x email
 ---  | x == "1" = visualizarAgendamentos email
-  | x == "2" = cancelarAgendamento email
+  | x == "1" = cancelarAgendamento email
   | x == "0" = menuPaciente
   | otherwise = invalidOption (segundoMenuMedico email)
 
