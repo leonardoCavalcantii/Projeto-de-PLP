@@ -55,9 +55,11 @@ data Agendamento = Agendamento
   { agendamentoId :: String,
     dataAgendamento :: String,
     servicos :: String,
-    concluido :: Bool,
+    status :: Bool,
     nomePacienteAgendado :: String,
-    emailDoPaciente :: String
+    emailDoPaciente :: String,
+    nomeDoMedico :: String,
+    emailDoMedico :: String
   }
   deriving (Read, Show)
 
@@ -151,8 +153,7 @@ menuAdm = do
   putStrLn "5 - Alterar Status de um agendamento"
   putStrLn "6 - Listar resumo de agendamentos"
   putStrLn "7 - Atualizar contato Adm"
-  putStrLn "8 - Remarcar data de um agendamento"
-  putStrLn "9 - Visualizar agendamentos pendentes"
+  putStrLn "8 - Visualizar agendamentos pendentes"
   putStrLn "0 - Voltar"
   printLine
   putStr "Opção: "
@@ -165,11 +166,10 @@ opcaoAdm x
   | x == "2" = verMedicosCadastrados
   | x == "3" = removerPaciente
   | x == "4" = removerMedico
----  | x == "5" = atualizarStatusAgendamento
+  | x == "5" = atualizarStatusAgendamento
   | x == "6" = listarAgendamentos
   | x == "7" = atualizarContatoAdm
----  | x == "8" = remarcarAgendamento
----  | x == "9" = visualizarAgendamentos
+---  | x == "8" = visualizarAgendamentos
   | x == "0" = showMenu
   | otherwise = invalidOption menuAdm
 
@@ -199,11 +199,10 @@ segundoMenuPaciente email = do
   printLine
   putStrLn "\nSelecione uma opção:\n"
   putStrLn "1 - Agendar Consulta"
-  putStrLn "2 - Visualizar Agendamentos"
+  putStrLn "2 - Visualizar Agendamentos Fechados"
   putStrLn "3 - Visualizar Agendamentos Abertos"
-  putStrLn "4 - Visualizar Agendamentos Fechados"
-  putStrLn "5 - Visualizar Perfil Médico"
-  putStrLn "6 - Cancelar agendamento"
+  putStrLn "4 - Visualizar Perfil Médico"
+  putStrLn "5 - Cancelar agendamento"
   putStrLn "0 - Voltar"
   printLine
   putStr "Opção: "
@@ -213,11 +212,10 @@ segundoMenuPaciente email = do
 segundaTelaPaciente :: String -> String -> IO ()
 segundaTelaPaciente x email
   | x == "1" = agendarConsulta email
----  | x == "2" = visualizarAgendamentos
----  | x == "3" = agendamentosConcluidos True email
----  | x == "4" = agendamentosConcluidos False email
----  | x == "5" = verPerfilMedico
----  | x == "6" = cancelarAgendamento email
+  | x == "2" = agendamentosConcluidos True email
+  | x == "3" = agendamentosConcluidos False email
+---  | x == "4" = verPerfilMedico
+  | x == "5" = cancelarAgendamento email
   | x == "0" = menuPaciente
   | otherwise = invalidOption (segundoMenuPaciente email)
 
@@ -247,8 +245,7 @@ segundoMenuMedico email = do
   printLine
   putStrLn "\nSelecione uma opção:\n"
   putStrLn "1 - Visualizar Agendamentos"
-  putStrLn "2 - Registrar ficha de um Paciente"
-  putStrLn "3 - Cancelar agendamento"
+  putStrLn "2 - Cancelar agendamento"
   putStrLn "0 - Voltar"
   printLine
   putStr "Opção: "
@@ -257,9 +254,8 @@ segundoMenuMedico email = do
 
 segundaTelaMedico :: String -> String -> IO ()
 segundaTelaMedico x email
----  | x == "1" = visualizarAgendamentosMedico email
----  | x == "2" = registrarFichaPaciente
----  | x == "3" = cancelarAgendamento
+---  | x == "1" = visualizarAgendamentos email
+  | x == "2" = cancelarAgendamento email
   | x == "0" = menuPaciente
   | otherwise = invalidOption (segundoMenuMedico email)
 
@@ -493,6 +489,28 @@ atualizarPaciente = do
     else do
       putStrLn "Arquivo 'pacientes.txt' não encontrado. Certifique-se de cadastrar pacientes antes de atualizar."
       menuPaciente
+
+atualizarStatusAgendamento :: IO ()
+atualizarStatusAgendamento = do
+  printLine
+  putStrLn "Digite o email do paciente:"
+  email <- getLine
+  printLine
+  putStrLn "\nSelecione o status desejado:"
+  putStrLn "1 - Concluído"
+  putStrLn "2 - Aguardando consulta"
+  printLine
+  opcao <- getLine
+  ---atualizarStatus opcao email
+
+  putStrLn "Alteração realizada com sucesso!"
+  menuAdm
+
+--atualizarStatus :: String -> String -> IO ()
+---atualizarStatus x
+---  | x == "1" = atualizaStatus True email
+---  | x == "2" = atualizaStatus False email
+---  | otherwise = invalidOption menuAdm
 -------------------------------------OperaçõesPaciente-------------------------------------
 
 cadastraPaciente :: IO ()
@@ -578,6 +596,12 @@ agendarConsulta email = do
   putStr "Seu nome: "
   nome <- getLine
 
+  putStr "Digite o nome do médico: "
+  nomeMedico <- getLine
+
+  putStr "Digite o email do médico: "
+  emailMedico <- getLine
+
   putStr "Data do agendamento: "
   dataAgendamento <- getLine
 
@@ -590,7 +614,7 @@ agendarConsulta email = do
 
   putStrLn ""
 
-  let agendamento = Agendamento id dataAgendamento servicos False nome email
+  let agendamento = Agendamento id dataAgendamento servicos False nome email nomeMedico emailMedico
 
   agendamentosCadastrados <- doesFileExist "agendamentos.txt"
 
@@ -602,8 +626,53 @@ agendarConsulta email = do
     else do
       file <- writeFile "agendamentos.txt" (show agendamento ++ "\n")
       putStrLn "Agendamento feito com sucesso!"
-      menuPaciente
+      segundoMenuPaciente email
     
+agendamentosConcluidos :: Bool -> String -> IO ()
+agendamentosConcluidos status email = do
+  fileExists <- doesFileExist "agendamentos.txt"
+  if not fileExists then do
+    putStrLn "Não existem agendamentos efetuados até o momento"
+  else do
+    file <- openFile "agendamentos.txt" ReadMode
+    contents <- hGetContents file
+
+    let agendamentosStr = lines contents
+    let agendamentos = map converterEmAgendamento agendamentosStr
+
+    printLine
+    putStrLn "\nListagem de agendamentos:"
+    mostrarAgendamentosDoCliente agendamentos email status
+  segundoMenuPaciente email
+
+mostrarAgendamentosDoCliente :: [Agendamento] -> String -> Bool -> IO ()
+mostrarAgendamentosDoCliente [] _ _ = return () 
+mostrarAgendamentosDoCliente (a : as) email statusAg = do
+  if obterAgendamentoStatusDeConcluido a == statusAg && obterAgendamento a "emailDoPaciente" == email
+    then do
+      putStrLn ""
+      putStrLn ("Paciente: " ++ nomePacienteAgendado a)
+      putStrLn ("Serviço: " ++ servicos a)
+      putStrLn ("Data: " ++ dataAgendamento a)
+      putStrLn ("Médico: " ++ nomeDoMedico a)
+      putStrLn ("Email Médico: " ++ emailDoMedico a)
+      putStrLn ("Status: " ++ show (status a))
+      mostrarAgendamentosDoCliente as email statusAg
+    else mostrarAgendamentosDoCliente as email statusAg
+
+cancelarAgendamento :: String -> IO ()
+cancelarAgendamento emailCliente = do
+  
+  fileExists <- doesFileExist "agendamentos.txt"
+  if not fileExists then do
+    putStrLn "Não existem agendamentos à serem cancelados."
+    segundoMenuPaciente emailCliente
+  else do
+    file <- openFile "agendamentos.txt" ReadMode
+    contents <- hGetContents file
+    putStrLn "Escolha um agendamento para cancelar: \n"
+    escolherAgendamento [read a :: Agendamento | a <- lines contents, obterAgendamento (read a :: Agendamento) "emailDoDono" == emailCliente] emailCliente
+
 --------------------------------------OperaçõesMedico--------------------------------------
 
 cadastraMedico :: IO ()
@@ -680,7 +749,7 @@ obterNomesMedicos :: Medico -> String
 obterNomesMedicos (Medico nomeMedico _ _ _ _ _) = nomeMedico
 
 obterNomesAgendamentos :: Agendamento -> String
-obterNomesAgendamentos (Agendamento agendamentoId _ _ _ _ _) = agendamentoId
+obterNomesAgendamentos (Agendamento agendamentoId _ _ _ _ _ _ _) = agendamentoId
 
 obterAdmin :: Admin -> String -> String
 obterAdmin Admin {nomeAdmin = n, senhaAdmin = s, telefoneAdmin = t} prop
@@ -712,24 +781,26 @@ obterMedico Medico {nomeMedico = nome, especialidade = especialidade, crm = crm,
   | prop == "senhaMedico" = senha
   | otherwise = "Propriedade não encontrada"
 
+obterAgendamento :: Agendamento -> String -> String
+obterAgendamento Agendamento {agendamentoId = id, dataAgendamento = dataAgendamento, status = status, nomePacienteAgendado = nomePaciente, emailDoPaciente = email} prop
+  | prop == "agendamentoId" = show id
+  | prop == "dataAgendamento" = dataAgendamento
+  | prop == "status" = show status
+  | prop == "nomePacienteAgendado" = nomePaciente
+  | prop == "emailDoPaciente" = email
+  | otherwise = "Propriedade não encontrada"
+
 obterEmailPaciente :: Paciente -> String
 obterEmailPaciente Paciente {nome = nome, cpf = cpf, endereco = endereco, contato = contato, emailPaciente = email, peso = peso, altura = altura, idade = idade, frh = frh, senhaPaciente = senha} = email
 
 obterEmailMedico :: Medico -> String
 obterEmailMedico Medico {nomeMedico = nome, especialidade = especialidade, crm = crm, telefoneMedico = contato, emailMedico = email, senhaMedico = senha} = email
 
-obterAgendamento :: Agendamento -> String -> String
-obterAgendamento Agendamento {agendamentoId = id, dataAgendamento = dataAgendamento, servicos = servicos, concluido = status, nomePacienteAgendado = nomePaciente, emailDoPaciente = email} prop
-  | prop == "agendamentoId" = show id
-  | prop == "dataAgendamento" = dataAgendamento
-  | prop == "servicos" = servicos
-  | prop == "concluido" = show status
-  | prop == "nomePacienteAgendado" = nomePaciente
-  | prop == "emailDoPaciente" = email
-  | otherwise = "Propriedade não encontrada"
+obterAgendamentoId :: Agendamento -> String
+obterAgendamentoId Agendamento {agendamentoId = id, dataAgendamento = dataAgendamento, servicos = servicos, status = status, nomePacienteAgendado = nomePaciente, emailDoPaciente = email} = id
 
 obterAgendamentoStatusConcluido :: Agendamento -> Bool
-obterAgendamentoStatusConcluido Agendamento {agendamentoId = id, dataAgendamento = dataAgendamento, servicos = servicos, concluido = status, nomePacienteAgendado = nomePaciente, emailDoPaciente = email} = status
+obterAgendamentoStatusConcluido Agendamento {agendamentoId = id, dataAgendamento = dataAgendamento, servicos = servicos, status = status, nomePacienteAgendado = nomePaciente, emailDoPaciente = email} = status
 
 encontraPaciente :: [Paciente] -> String  -> Bool
 encontraPaciente [] email = False
@@ -825,3 +896,52 @@ mudaContato = do
 
       putStrLn "\nContato atualizado com sucesso!"
       menuAdm
+
+converterEmAgendamento :: String -> Agendamento
+converterEmAgendamento a = read a :: Agendamento
+
+obterAgendamentoStatusDeConcluido :: Agendamento -> Bool
+obterAgendamentoStatusDeConcluido Agendamento {agendamentoId = i, dataAgendamento = dataAgendamento, servicos = servicos, status = c, nomePacienteAgendado = nome, emailDoPaciente = email} = c
+
+escolherAgendamento :: [Agendamento] -> String -> IO ()
+escolherAgendamento [] emailPaciente = do
+  putStrLn "Nenhum agendamento cadastrado \n"
+  segundoMenuPaciente emailPaciente
+escolherAgendamento [a] emailCliente = do
+  imprimirEscolhaAgendamento a
+  printLine
+  putStr "opção: "
+  opcao <- getLine
+  removerAgendamento opcao emailCliente
+escolherAgendamento (a : as) emailCliente = do
+  imprimirEscolhaAgendamento a
+  escolherAgendamento as emailCliente
+
+imprimirEscolhaAgendamento :: Agendamento -> IO ()
+imprimirEscolhaAgendamento a = do
+  putStrLn (obterAgendamento a "agendamentoId" ++ " - " ++ obterAgendamento a "servicos: " ++ " - " ++ obterAgendamento a "dataAgendamento" ++ "; ")
+
+removerAgendamento :: String -> String -> IO ()
+removerAgendamento opcao emailPaciente = do
+  contents <- readFile "agendamentos.txt"
+  let agendamentos = [read a :: Agendamento | a <- lines contents]
+  let hasAgendamento = encontrarAgendamento agendamentos (read opcao :: String)
+
+  if not hasAgendamento
+    then do
+      putStrLn "Agendamento não encontrado"
+      cancelarAgendamento emailPaciente
+    else do
+      removeFile "agendamentos.txt"
+      atualizarAgendamentos [a | a <- agendamentos, obterAgendamento a "agendamentoId" /= opcao]
+      putStrLn "Agendamento cancelado com sucesso!"
+      segundoMenuPaciente emailPaciente
+
+encontrarAgendamento :: [Agendamento] -> String -> Bool
+encontrarAgendamento [] agendamentoId = False
+encontrarAgendamento (c : cs) agendamentoId
+  | obterAgendamentoId c == agendamentoId = True
+  | obterAgendamentoId c /= agendamentoId = encontrar
+  where
+    encontrar = encontrarAgendamento cs agendamentoId
+
