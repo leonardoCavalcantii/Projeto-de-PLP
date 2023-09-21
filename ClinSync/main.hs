@@ -72,8 +72,35 @@ data Ficha = Ficha
   }
   deriving (Read, Show)
 
+imprimirCliniSync :: IO ()
+imprimirCliniSync = do
+  putStrLn "                                                                                                                                          "
+  putStrLn "        CCCCCCCCCCCCClllllll   iiii                     iiii     SSSSSSSSSSSSSSS                                                          "
+  putStrLn "     CCC::::::::::::Cl:::::l  i::::i                   i::::i  SS:::::::::::::::S                                                         "
+  putStrLn "   CC:::::::::::::::Cl:::::l   iiii                     iiii  S:::::SSSSSS::::::S                                                         "
+  putStrLn "  C:::::CCCCCCCC::::Cl:::::l                                  S:::::S     SSSSSSS                                                         "
+  putStrLn " C:::::C       CCCCCC l::::l iiiiiiinnnn  nnnnnnnn    iiiiiii S:::::S      yyyyyyy           yyyyyyynnnn  nnnnnnnn        cccccccccccccccc"
+  putStrLn "C:::::C               l::::l i:::::in:::nn::::::::nn  i:::::i S:::::S       y:::::y         y:::::y n:::nn::::::::nn    cc:::::::::::::::c"
+  putStrLn "C:::::C               l::::l  i::::in::::::::::::::nn  i::::i  S::::SSSS     y:::::y       y:::::y  n::::::::::::::nn  c:::::::::::::::::c"
+  putStrLn "C:::::C               l::::l  i::::inn:::::::::::::::n i::::i   SS::::::SSSSS y:::::y     y:::::y   nn:::::::::::::::nc:::::::cccccc:::::c"
+  putStrLn "C:::::C               l::::l  i::::i  n:::::nnnn:::::n i::::i     SSS::::::::SSy:::::y   y:::::y      n:::::nnnn:::::nc::::::c     ccccccc"
+  putStrLn "C:::::C               l::::l  i::::i  n::::n    n::::n i::::i        SSSSSS::::Sy:::::y y:::::y       n::::n    n::::nc:::::c             "
+  putStrLn "C:::::C               l::::l  i::::i  n::::n    n::::n i::::i             S:::::Sy:::::y:::::y        n::::n    n::::nc:::::c             "
+  putStrLn " C:::::C       CCCCCC l::::l  i::::i  n::::n    n::::n i::::i             S:::::S y:::::::::y         n::::n    n::::nc::::::c     ccccccc"
+  putStrLn "  C:::::CCCCCCCC::::Cl::::::li::::::i n::::n    n::::ni::::::iSSSSSSS     S:::::S  y:::::::y          n::::n    n::::nc:::::::cccccc:::::c"
+  putStrLn "   CC:::::::::::::::Cl::::::li::::::i n::::n    n::::ni::::::iS::::::SSSSSS:::::S   y:::::y           n::::n    n::::n c:::::::::::::::::c"
+  putStrLn "     CCC::::::::::::Cl::::::li::::::i n::::n    n::::ni::::::iS:::::::::::::::SS   y:::::y            n::::n    n::::n  cc:::::::::::::::c"
+  putStrLn "        CCCCCCCCCCCCClllllllliiiiiiii nnnnnn    nnnnnniiiiiiii SSSSSSSSSSSSSSS    y:::::y             nnnnnn    nnnnnn    cccccccccccccccc"
+  putStrLn "                                                                                 y:::::y                                                  "
+  putStrLn "                                                                                y:::::y                                                   "
+  putStrLn "                                                                               y:::::y                                                    "
+  putStrLn "                                                                              y:::::y                                                     "
+  putStrLn "                                                                             yyyyyyy                                                      "
+  putStrLn "                                                                                                                                          "
+  putStrLn "                                                                                                                                          "
+
 printLine :: IO ()
-printLine = putStrLn "\n------------------------------------------------------------"
+printLine = putStrLn "\n------------------------------------------------------------------------------------------------------------------------------------------"
 
 invalidOption :: IO () -> IO ()
 invalidOption function = do
@@ -88,6 +115,8 @@ encerrarSessao = do
 
 main :: IO ()
 main = do
+  printLine
+  imprimirCliniSync
   printLine
   putStr "Bem vindo ao CliniSync - Sistema de agendamento de consultas"
   printLine
