@@ -854,7 +854,7 @@ verContatoDoAdministradorP :: IO ()
 verContatoDoAdministradorP = do
   adminContent <- readFile "admin.txt"
   let admin = read adminContent :: Admin
-  putStr "\nContato: \n"
+  putStr "\nAdministrador: \n"
   putStrLn (obterAdmin admin "nome")
   putStrLn (obterAdmin admin "telefone")
   menuPaciente
