@@ -1,0 +1,1 @@
+Admin {nomeAdmin = "Dono de Tudo", senhaAdmin = "123123", telefoneAdmin = "(83 999.999.999)"}
