@@ -24,22 +24,25 @@ imprimirCliniSync :-
    
 
 printLine :-
-    writeln("\n------------------------------------------------------------------------------------------------------------------------------------------").
+    writeln("------------------------------------------------------------------------------------------------------------------------------------------").
 
 main :- 
     imprimirCliniSync,
     printLine,
-    write( "Bem-vindo ao CliniSync - Sistema de agendamento de consultas"),
+    writeln("Bem-vindo ao CliniSync - Sistema de agendamento de consultas!"),
     printLine,
     showMenu.
 
 showMenu :- 
     printLine,
-    writeln("1 - Administrador"),
-    writeln("2 - Paciente"),
-    writeln("3 - Medico"),
-    writeln("4 - Sair"),
-    writeln("\nIdentifique-se selecionando o seu perfil:"),
+    writeln("MENU"),
+    printLine,
+    writeln("Identifique o seu perfil:\n"),
+    writeln("   1 - Administrador"),
+    writeln("   2 - Paciente"),
+    writeln("   3 - Medico"),
+    writeln("   4 - Sair"),
+    writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
         Option == "1" -> (login_adm -> menuAdm);
@@ -52,6 +55,8 @@ showMenu :-
 
 menuAdm :-
     printLine,
+    writeln("MENU ADMINISTRADOR"),
+    printLine,
     writeln("1 - Ver pacientes cadastrados no sistema"),
     writeln("2 - Ver médicos cadastrados no sistema"),
     writeln("3 - Remover paciente"),
@@ -61,7 +66,6 @@ menuAdm :-
     writeln("7 - Atualizar contato Adm"),
     writeln("8 - Visualizar agendamentos pendentes"),
     writeln("0 - voltar"),
-    printLine,
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
@@ -80,6 +84,8 @@ menuAdm :-
 
 menuPaciente :-
     printLine,
+    writeln("MENU PACIENTE"),
+    printLine,
     writeln("1 - Cadastrar-se"),
     writeln("2 - Logar"),
     writeln("3 - Consultar dados do Administrador"),
@@ -95,7 +101,9 @@ menuPaciente :-
         menuPaciente
     ).
 
-menuInPaciente :-
+menuInPaciente(email) :-
+    printLine,
+    writeln("MENU DE INTERACAO DO PACIENTE"),
     printLine,
     writeln("1 - Agendar consulta"),
     writeln("2 - Visualizar agendamentos concluidos"),
@@ -121,6 +129,8 @@ menuInPaciente :-
 
 menuMedico :-
     printLine,
+    writeln("MENU MEDICO"),
+    printLine,
     writeln("1 - Cadastrar-se"),
     writeln("2 - Logar"),
     writeln("3 - Consultar dados do Administrador"),
@@ -136,7 +146,9 @@ menuMedico :-
         menuMedico
     ).
 
-menuInMedico :-
+menuInMedico(email) :-
+    printLine,
+    writeln("MENU DE INTERACAO MEDICO"),
     printLine,
     writeln("1 - Visualizar agendamentos"),
     writeln("2 - Visualizar agendamentos pendentes"),
@@ -160,4 +172,10 @@ menuInMedico :-
 opcaoInvalida :-
 	 writeln("Opcao invalida!").
 
-sair :- halt.
+sair :- 
+    printLine,
+    writeln("Saindo do CliniSync..."),
+    printLine,
+    writeln("Obrigado por usar nosso sistema."),
+    printLine,
+    halt.
