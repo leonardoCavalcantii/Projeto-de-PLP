@@ -38,12 +38,45 @@ showMenu :-
     writeln("\nIdentifique-se selecionando o seu perfil:\n"),
     writeln("1 - Administrador"),
     writeln("2 - Paciente"),
-    writeln("3 - Médico"),
+    writeln("3 - Medico"),
     writeln("4 - Sair"),
     printLine,
     read_line_to_string(user_input, Option),
     (
-        Option == "1" ->
-    )
+        Option == "1" -> login_adm -> menuAdm;
+        Option == "2" -> menuPaciente;
+        Option == "3" -> menuMedico;
+        Option == "4" -> sair;
+        opcaoInvalida,
+        showMenu, halt
+    ).
 
+menuAdm :-
+    writeln("Selecione uma opção:"),
+    writeln("1 - Ver pacientes cadastrados no sistema"),
+    writeln("2 - Ver médicos cadastrados no sistema"),
+    writeln("3 - Remover paciente"),
+    writeln("4 - Remover médico"),
+    writeln("5 - Alterar status de agendamento"),
+    writeln("6 - Listar resumo de agendamentos"),
+    writeln("7 - Atualizar contato Adm"),
+    writeln("8 - Visualizar agendamentos pendentes"),
+    whiteln("0 - voltar"),
+    read_line_to_string(user_input, Option),
+    (
+        Option == "1" -> listarPacientes, menuAdm;
+        Option == "2" -> listarMedicos, menuAdm;
+        Option == "3" -> removePaciente, menuAdm;
+        Option == "4" -> removeMedico, menuAdm;
+        Option == "5" -> alterarStatusAgendamento, menuAdm;
+        Option == "6" -> listarResumoAgendamentos, menuAdm;
+        Option == "7" -> atualizarAdm, menuAdm;
+        Option == "8" -> listarAgendamentosPendentes, menuAdm;
+        Option == "0" -> showMenu;
+        opcaoInvalida,
+        menuAdm
+    ).
+    
 
+opcaoInvalida :-
+	 writeln("Opcao invalida!").
