@@ -2,6 +2,7 @@ bd_Medico:- consult('./Data/bd_Medico.pl'). % Esse path está errado o bd não e
 
 cadastraMedico:- 
     bd_Medico, nl,
+   nl, writeln("Digite seus dados: "),
     writeln("Digite seu nome: "),
     read_line_to_string(user_input, NomeMedico), nl,
 
