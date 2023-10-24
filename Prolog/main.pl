@@ -27,7 +27,6 @@ printLine :-
     writeln("\n------------------------------------------------------------------------------------------------------------------------------------------").
 
 main :- 
-    printLine,
     imprimirCliniSync,
     printLine,
     write( "Bem-vindo ao CliniSync - Sistema de agendamento de consultas"),
@@ -35,62 +34,127 @@ main :-
     showMenu.
 
 showMenu :- 
-    writeln("\nIdentifique-se selecionando o seu perfil:\n"),
+    printLine,
     writeln("1 - Administrador"),
     writeln("2 - Paciente"),
     writeln("3 - Medico"),
     writeln("4 - Sair"),
-    printLine,
+    writeln("\nIdentifique-se selecionando o seu perfil:"),
     read_line_to_string(user_input, Option),
     (
         Option == "1" -> (login_adm -> menuAdm);
-        Option == "2" -> menuPaciente;
-        Option == "3" -> menuMedico;
-        Option == "4" -> sair;
+        Option == "2" -> (menuPaciente);
+        Option == "3" -> (menuMedico);
+        Option == "4" -> (sair);
         opcaoInvalida,
         showMenu, halt
     ).
 
 menuAdm :-
-    writeln("Selecione uma opção:"),
+    printLine,
     writeln("1 - Ver pacientes cadastrados no sistema"),
     writeln("2 - Ver médicos cadastrados no sistema"),
     writeln("3 - Remover paciente"),
-    writeln("4 - Remover médico"),
+    writeln("4 - Remover medico"),
     writeln("5 - Alterar status de agendamento"),
     writeln("6 - Listar resumo de agendamentos"),
     writeln("7 - Atualizar contato Adm"),
     writeln("8 - Visualizar agendamentos pendentes"),
-    whiteln("0 - voltar"),
+    writeln("0 - voltar"),
+    printLine,
+    writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> listarPacientes, menuAdm;
-        Option == "2" -> listarMedicos, menuAdm;
-        Option == "3" -> removePaciente, menuAdm;
-        Option == "4" -> removeMedico, menuAdm;
-        Option == "5" -> alterarStatusAgendamento, menuAdm;
-        Option == "6" -> listarResumoAgendamentos, menuAdm;
-        Option == "7" -> atualizarAdm, menuAdm;
-        Option == "8" -> listarAgendamentosPendentes, menuAdm;
-        Option == "0" -> showMenu;
+        Option == "1" -> (listarPacientes, menuAdm);
+        Option == "2" -> (listarMedicos, menuAdm);
+        Option == "3" -> (removePaciente, menuAdm);
+        Option == "4" -> (removeMedico, menuAdm);
+        Option == "5" -> (alterarStatusAgendamento, menuAdm);
+        Option == "6" -> (listarResumoAgendamentos, menuAdm);
+        Option == "7" -> (atualizarAdm, menuAdm);
+        Option == "8" -> (listarAgendamentosPendentes, menuAdm);
+        Option == "0" -> (showMenu);
         opcaoInvalida,
         menuAdm
     ).
 
 menuPaciente :-
-    whiteln("Selecione uma opção:"),
-    whiteln("1 - Cadastrar-se"),
-    whiteln("2 - Logar"),
-    whiteln("3 - Consultar dados do Administrador"),
-    whiteln("0 - Voltar ao menu principal"),
+    printLine,
+    writeln("1 - Cadastrar-se"),
+    writeln("2 - Logar"),
+    writeln("3 - Consultar dados do Administrador"),
+    writeln("0 - Voltar ao menu principal"),
+    writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> cadastraPaciente, menuPaciente;
-        Option == "2" -> (logarPaciente(email) -> menuInPaciente(email));
-        Option == "3" -> exibeContatoAdm, menuPaciente;
-        Option == "0" -> showMenu;
+        Option == "1" -> (cadastraPaciente, menuPaciente);
+        Option == "2" -> (logarPaciente(email) -> menuInPaciente(email); menuPaciente);
+        Option == "3" -> (exibeContatoAdm, menuPaciente);
+        Option == "0" -> (showMenu);
         opcaoInvalida,
-        menuInPaciente
+        menuPaciente
+    ).
+
+menuInPaciente :-
+    printLine,
+    writeln("1 - Agendar consulta"),
+    writeln("2 - Visualizar agendamentos concluidos"),
+    writeln("3 - Visualizar agendamentos pendentes"),
+    writeln("4 - Visualizar perfil de um medico"),
+    writeln("5 - remarcar agendamento"),
+    writeln("6 - cancelar agendamento"),
+    writeln("0 - Voltar"),
+    writeln("\nSelecione uma opcao:"),
+    read_line_to_string(user_input, Option),
+    (
+        Option == "1" -> (agendaConsultaPaciente(email), menuInPaciente(email));
+        Option == "2" -> (listaAgendamentosConcluidosPaciente(email), menuInPaciente(email));
+        Option == "3" -> (listaAgendamentosPendentesPaciente(email), menuInPaciente(email));
+        Option == "4" -> (visualizarPerfilMedico, menuInPaciente(email));
+        Option == "5" -> (remarcaAgendamentoPaciente, menuInPaciente(email));
+        Option == "6" -> (cancelaAgendamentoPaciente, menuInPaciente(email));
+        Option == "0" -> (menuPaciente);
+        opcaoInvalida,
+        menuInPaciente(email)
+    ).
+
+
+menuMedico :-
+    printLine,
+    writeln("1 - Cadastrar-se"),
+    writeln("2 - Logar"),
+    writeln("3 - Consultar dados do Administrador"),
+    writeln("0 - Voltar ao menu principal"),
+    writeln("\nSelecione uma opcao:"),
+    read_line_to_string(user_input, Option),
+    (
+        Option == "1" -> (cadastraMedico, menuMedico);
+        Option == "2" -> (logarMedico(email), menuInMedico(email));
+        Option == "3" -> (exibeContatoAdm, menuMedico);
+        Option == "0" -> (showMenu);
+        opcaoInvalida,
+        menuMedico
+    ).
+
+menuInMedico :-
+    printLine,
+    writeln("1 - Visualizar agendamentos"),
+    writeln("2 - Visualizar agendamentos pendentes"),
+    writeln("3 - Cancelar agendamento"),
+    writeln("4 - Agendar horario para consulta")
+    writeln("5 - Visualizar perfil de um paciente"),
+    writeln("0 - Voltar"),
+    writeln("\nSelecione uma opcao:"),
+    read_line_to_string(user_input, Option),
+    (
+        Option == "1" -> (listarAgendamentosMedico(email), menuInMedico(email));
+        Option == "2" -> (listarAgendamentosPendentesMedico(email), menuInMedico(email));
+        Option == "3" -> (cancelaAgendamentoMedico(email), menuInMedico(email));
+        Option == "4" -> (agendaHorarioMedico(email), menuInMedico(email));
+        Option == "5" -> (visualizarPerfilPaciente, menuInMedico(email));
+        Option == "0" -> (menuMedico);
+        opcaoInvalida,
+        menuInMedico(email)
     ).
 
 opcaoInvalida :-
