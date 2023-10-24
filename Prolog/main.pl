@@ -43,7 +43,7 @@ showMenu :-
     printLine,
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> login_adm -> menuAdm;
+        Option == "1" -> (login_adm -> menuAdm);
         Option == "2" -> menuPaciente;
         Option == "3" -> menuMedico;
         Option == "4" -> sair;
@@ -76,7 +76,24 @@ menuAdm :-
         opcaoInvalida,
         menuAdm
     ).
-    
+
+menuPaciente :-
+    whiteln("Selecione uma opção:"),
+    whiteln("1 - Cadastrar-se"),
+    whiteln("2 - Logar"),
+    whiteln("3 - Consultar dados do Administrador"),
+    whiteln("0 - Voltar ao menu principal"),
+    read_line_to_string(user_input, Option),
+    (
+        Option == "1" -> cadastraPaciente, menuPaciente;
+        Option == "2" -> (logarPaciente(email) -> menuInPaciente(email));
+        Option == "3" -> exibeContatoAdm, menuPaciente;
+        Option == "0" -> showMenu;
+        opcaoInvalida,
+        menuInPaciente
+    ).
 
 opcaoInvalida :-
 	 writeln("Opcao invalida!").
+
+sair :- halt.
