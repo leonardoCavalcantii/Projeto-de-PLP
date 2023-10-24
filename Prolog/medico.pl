@@ -1,4 +1,4 @@
-bd_Medico:- consult('./Data/bd_Medico.pl').
+bd_Medico:- consult('./Data/bd_Medico.pl'). % Esse path está errado o bd não está em um package Data então é só / bd_Medico.pl
 
 cadastraMedico:- 
     bd_Medico, nl,
