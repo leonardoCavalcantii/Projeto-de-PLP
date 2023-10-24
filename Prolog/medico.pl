@@ -1,4 +1,4 @@
-bd_Medico:- consult('./Data/bd_Medico.pl'). % Esse path está errado o bd não está em um package Data então é só / bd_Medico.pl
+bd_Medico:- consult('./bd_Medico.pl').
 
 cadastraMedico:- 
     bd_Medico, nl,
@@ -18,7 +18,7 @@ cadastraMedico:-
 
 adicionaMedico:-
     bd_Medico,
-    tell('./Data/bd_Medico.pl'),  nl,
+    tell('./bd_Medico.pl'),  nl,
     listing(medico/3),
     told.
     
@@ -39,30 +39,37 @@ removeMedico:-
     nl,
 	writeln("Insira o Nome do medico a ser excluido: "),
     read_line_to_string(user_input, Nome),
-    retornaListaDeMedicos(List),
-    adicionaListaMedicos(List),
-    tell('./Data/bd_Medico.pl'),  nl,
+    retornaListaDeMedicos(Lista),
+    removeMedicoAux(Lista, Nome, ListaAtualizada),
+    retractall(medico(_,_,_)),
+    adicionaListaMedicos(ListaAtualizada),
+    tell('./bd_Medico.pl'),  nl,
     listing(medico/3),
     told,
     fimMetodo.
 
+retornaListaDeMedicos(Lista):-
+    findall([Nome, Especialidade, Numero], medico(Nome, Especialidade, Numero), Lista).
+
 adicionaListaMedicos([]). 
+
 adicionaListaMedicos([[Nome, Especialidade, Numero] | T]):-
     addMedico(Nome, Especialidade, Numero), adicionaListaMedicos(T).
 
 addMedico(Nome,Especialidade, Numero):-
     assertz(medico(Nome, Especialidade, Numero)).
 
-removeMedicoAux([H|T], Nome, [H|Retorno]):- removeMedicoAux(T, Nome, Ret).
-
-removeMedicoAux([H|T], Nome, T):- member(Nome, H).
-
-remove_cliente_aux([],_,[]) :- nl, writeln("Medico inexistente"), nl.
-
-retornaListaDeMedicos(Lista):-
-    findall([Nome, Especialidade, Numero], medico(Nome, Especialidade, Numero), Lista);
+    removeMedicoAux([H|T], Nome, Retorno) :-
+        member(Nome, H),
+        !.
+    
+    removeMedicoAux([H|T], Nome, [H|Retorno]) :-
+        removeMedicoAux(T, Nome, Retorno).
+    
+    removeMedicoAux([], _, []) :-
+        nl, writeln("Medico inexistente"), nl.
 
 fimMetodo:-
     writeln("Clique em enter para continuar: "),
     read_line_to_string(user_input, _).
-    
+
