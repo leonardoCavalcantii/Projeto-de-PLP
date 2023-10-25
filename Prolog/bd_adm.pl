@@ -1,4 +1,4 @@
 
 :- dynamic administrador/3.
 
-administrador("dono de tudo", "dono@email", "1234").
+administrador("Max Donno", "max.donno@clinisync.com", "1234").
