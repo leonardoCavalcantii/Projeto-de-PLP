@@ -1,5 +1,5 @@
-setup_bd_Paciente:- 
-	consult('./bd_Paciente.pl').
+setup_bd_Paciente :-
+    consult('./bd_Paciente.pl').
 
 printLine :-
     writeln("------------------------------------------------------------------------------------------------------------------------------------------").
@@ -37,7 +37,7 @@ cadastraPaciente :-
 
     nl,
     (get_emails_paciente(Emails), member(Email, Emails) ->
-        writeln("Email ja cadastrado."),
+        writeln("Email já cadastrado."),
         nl;
         assertz(paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)),
         adicionaPaciente,
@@ -47,97 +47,91 @@ cadastraPaciente :-
     fimMetodo.
 
 adicionaPaciente :-
-	setup_bd_Paciente,
-	tell('./bd_Paciente.pl'), 
-	nl,
-	listing(paciente/8),
-	told.
+    setup_bd_Paciente,
+    tell('./bd_Paciente.pl'),
+    nl,
+    listing(paciente/8),
+    told.
 
-
-get_emails_paciente(Emails) :- 
-	findall(Email, paciente(_,_,_,_,_,_,Email,_), Emails).
+get_emails_paciente(Emails) :-
+    findall(Email, paciente(_, _, _, _, _, _, Email, _), Emails).
 
 loginPaciente(Email) :-
-	nl,
-	writeln("Insira seu email: "),
-	read_line_to_string(user_input, Email),
-	writeln("Insira sua senha: "),
-	read_line_to_string(user_input, Senha),
-	(cliente(_, Email, Senha, _) -> nl, writeln("Login realizado com sucesso!"), nl;
-	writeln("Senha incorreta."), nl, false).
+    nl,
+    writeln("Insira seu email: "),
+    read_line_to_string(user_input, Email),
+    writeln("Insira sua senha: "),
+    read_line_to_string(user_input, Senha),
+    (cliente(_, Email, Senha, _) -> nl, writeln("Login realizado com sucesso!"), nl;
+        writeln("Senha incorreta."), nl, false).
 
 login_paciente(Email) :-
-	setup_bd,
-	arquivo_vazio -> writeln("Paciente não cadastrado."), nl, false;
-	(paciente(_, _, _, _) -> loginPaciente(Email);
-	writeln("Paciente não cadastrado."), nl, false),
-	fimMetodo.
+    setup_bd_Paciente,
+    arquivo_vazio -> writeln("Paciente não cadastrado."), nl, false;
+    (paciente(_, _, _, _, _, _, Email, _) -> loginPaciente(Email);
+        writeln("Paciente não cadastrado."), nl, false),
+    fimMetodo.
 
-fimMetodo:-
-	writeln("Clique em enter para continuar: "),
-	read_line_to_string(user_input, _).
+fimMetodo :-
+    writeln("Clique em enter para continuar: "),
+    read_line_to_string(user_input, _).
 
-%------------------------------------------------------------------------------------------------------
-	listarPacientes:- 
-		setup_bd_Paciente,
-		findall(N, Paciente(N,_,_), ListaDePaciente), 
-		exibirListaDePaciente(ListaDePaciente), 
-		told,
-		fimMetodo.
-	
-		exibirListaDePaciente([H|T]):-
-		writeln(H),
-		exibirListaDePaciente(T).
-	
-		exibirListaDePaciente([]).
-	
-	removePaciente:-
-		nl,
-		writeln("Insira o Nome do paciente a ser excluido: "),
-		read_line_to_string(user_input, Nome),
-		retornaListaDePaciente(Lista),
-		removePacienteAux(Lista, Nome, ListaAtualizada),
-		retractall(Paciente(_,_,_)),
-		adicionaListaPaciente(ListaAtualizada),
-		tell('./bd_Paciente.pl'),  nl,
-		listing(medico/3),
-		told,
-		fimMetodo.
-	
-	retornaListaDePaciente(Lista):-
-		findall([Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha], Paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha), Lista).
-	
-	adicionaListaPaciente([]). 
-	
-	adicionaListaPaciente([[Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha] | T]):-
-		addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha), adicionaListaPaciente(T).
-	
-	addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha):-
-		assertz(Paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)).
-	
-		removePacienteAux([H|_], Nome, _) :-
-			member(Nome, H),
-			!.
-		
-			removePacienteAux([H|T], Nome, [H|Retorno]) :-
-				removePacienteAux(T, Nome, Retorno).
-		
-			removePacienteAux([], _, []) :-
-			nl, writeln("Paciente informado não existe!"), nl.
-	
-	visualizarAgendamentos(Medico, List):-
-		bd_Agendamento,
-		findall([Medico, Paciente, Horario, Status], agendamento(Medico, Paciente, Horario, Status), List),
-		told.
-	
-	visualizarAgendamentosPendentes(Medico, List) :-
-		bd_Agendamento,
-		findall([Medico, Paciente, Horario, Status], (agendamento(Medico, Paciente, Horario, Status), Status == "Pendente"), List),
-		told.
-		
-			
-	
-	fimMetodo:-
-		writeln("Clique em enter para continuar: "),
-		read_line_to_string(user_input, _).
-	
+listarPacientes :-
+    setup_bd_Paciente,
+    findall(N, paciente(N, _, _, _, _, _, _, _), ListaDePaciente),
+    exibirListaDePaciente(ListaDePaciente),
+    told,
+    fimMetodo.
+
+exibirListaDePaciente([H|T]) :-
+    writeln(H),
+    exibirListaDePaciente(T).
+
+exibirListaDePaciente([]).
+
+removePaciente :-
+    nl,
+    writeln("Insira o Nome do paciente a ser excluído: "),
+    read_line_to_string(user_input, Nome),
+    retornaListaDePaciente(Lista),
+    removePacienteAux(Lista, Nome, ListaAtualizada),
+    retractall(paciente(_, _, _, _, _, _, _, _)),
+    adicionaListaPaciente(ListaAtualizada),
+    tell('./bd_Paciente.pl'),
+    nl,
+    listing(paciente/8),
+    told,
+    fimMetodo.
+
+retornaListaDePaciente(Lista) :-
+    findall([Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha], paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha), Lista).
+
+adicionaListaPaciente([]).
+
+adicionaListaPaciente([[Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha] | T]) :-
+    addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha),
+    adicionaListaPaciente(T).
+
+addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha) :-
+    assertz(paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)).
+
+removePacienteAux([H|_], Nome, _) :-
+    member(Nome, H),
+    !.
+
+removePacienteAux([H|T], Nome, [H|Retorno]) :-
+    removePacienteAux(T, Nome, Retorno).
+
+removePacienteAux([], _, []) :-
+    nl, writeln("Paciente informado não existe!"), nl.
+
+criarAgendamento(Paciente, Medico, Horario) :-
+    bd_Agendamento,
+    \+ agendamento(Medico, Paciente, Horario, _),
+    assertz(agendamento(Medico, Paciente, Horario, "Pendente")),
+    told,
+    writeln("Agendamento criado com sucesso!").
+
+fimMetodo :-
+    writeln("Clique em enter para continuar: "),
+    read_line_to_string(user_input, _).
