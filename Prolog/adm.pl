@@ -20,50 +20,27 @@ setup_bd_paciente :-
 arquivo_vazio_adm :-
     \+(predicate_property(administrador(_,_,_), dynamic)).
 
-logarAdm(Email, Senha) :-
+logarAdm :-
     printLine,
     writeln("LOGAR ADMINISTRADOR"),
     printLine,
     writeln("Insira seu email:"),
-    read_line_to_string(user_input, EmailInput),
+    read_line_to_string(user_input, Email),
     
     nl,
     writeln("Insira sua senha: "),
-	read_line_to_string(user_input, SenhaInput),
+	read_line_to_string(user_input, Senha),
 
-    (administrador(_, Email, Senha) -> 
-        (
-            EmailInput = Email, SenhaInput = Senha ->
-            printLine,
-            writeln("Login realizado com sucesso!"),
-            printLine,
-            nl;
-            printLine,
-	        writeln("Email ou senha incorretos!"),
-            printLine,
-            nl,
-            false
-        );
-        printLine,
-        writeln("Email ou senha incorretos!"),
-        printLine,
-        nl,
-        false
-    ).
+    (administrador(_, Email, Senha) -> nl, writeln("Login realizado com sucesso!"), nl;
+    writeln("Senha incorreta!"), nl, false).
 
-logar_adm(Email, Senha) :-
+logar_Adm :-
     setup_bd_adm,
     arquivo_vazio_adm -> 
         printLine,
-        writeln("Administrador não cadastrado!"), 
+        writeln("Administrador nao cadastrado!"), 
         printLine,
         nl, 
         false;
-	(administrador(_, Email, Senha) -> 
-        logarAdm(Email, Senha);
-        printLine,
-        writeln("Administrador não cadastrado!"), 
-        printLine,
-        nl, 
-        false
-    ).
+        (administrador(_, _, _)) -> logarAdm;
+        writeln("Administrador nao cadastrado!"), nl, false.
