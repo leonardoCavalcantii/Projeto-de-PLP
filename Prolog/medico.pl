@@ -168,7 +168,7 @@ rejeitaAgendamento(Id, [H|T], [H| Ret]):-
     writeln(H), rejeitaAgendamento(Id, T, Ret).
 
 rejeitaAgendamento(Id, [H|_], _):-
-    member(Id, H), !.
+    member(Id, H), H = agendamento.
 
 rejeitaAgendamento(_, [], []):-
     nl, writeln("Agendamento inexistente"), nl.
