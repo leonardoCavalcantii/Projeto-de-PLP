@@ -133,7 +133,6 @@ menuInPaciente(Email) :-
         menuInPaciente(Email)
     ).
 
-
 menuMedico :-
     printLine,
     writeln("MENU MEDICO"),

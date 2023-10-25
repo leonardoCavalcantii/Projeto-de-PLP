@@ -44,3 +44,28 @@ logar_Adm :-
         false;
         (administrador(_, _, _)) -> logarAdm;
         writeln("Administrador nao cadastrado!"), nl, false.
+
+exibeContatoAdm :-
+    setup_bd_adm,
+    printLine,
+    writeln("CONTATO DO ADMINISTRADOR"),
+    printLine,
+    findall([Nome, Email], administrador(Nome, Email, _), Adm),
+    exibirAdm(Adm),
+    printLine,
+    told,
+    fimMetodo.
+
+exibirAdm([[Nome, Email] | T]) :-
+    writeln("Nome administrador: "),
+    writeln(Nome),
+    nl,
+    writeln("Email administrador: "),
+    writeln(Email),
+    exibirAdm(T).
+
+exibirAdm([]).
+
+fimMetodo:-
+    writeln("Clique em enter para continuar: "),
+    read_line_to_string(user_input, _).
