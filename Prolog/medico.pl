@@ -1,26 +1,57 @@
 bd_Medico:- consult('./bd_Medico.pl').
 bd_Agendamento:- consult('./bd_Agendamento').
 
+arquivo_vazio :-
+	\+(predicate_property(medico(_,_,_,_,_,_), dynamic)).
+
+
 cadastraMedico:- 
     bd_Medico, nl,
    nl, writeln("Digite seus dados: "),
-    writeln("Digite seu nome: "),
+    
+    nl, writeln("Digite seu nome: "),
     read_line_to_string(user_input, NomeMedico), nl,
 
-    writeln("Digite sua especialidade: "),
+    nl, writeln("Digite sua especialidade: "),
     read_line_to_string(user_input, Especialidade), nl,
 
-    writeln("Digite seu numero: "),
-    read_line_to_string(user_input, Numero), nl,
+    nl, writeln("Digite seu crm: "),
+    read_line_to_string(user_input, CRM), nl,
+    
+    nl, writeln("Digite seu telefone: "),
+    read_line_to_string(user_input, NumeroMedico), nl,
+    
+    nl, writeln("Digite seu email: "),
+    read_line_to_string(user_input, EmailMedico), nl,
 
-    assertz(medico(NomeMedico, Especialidade, Numero)),
+    nl, writeln("Digite seu senha: "),
+    read_line_to_string(user_input, SenhaMedico), nl,
+
+    
+    
+    
+(get_crms_medico(CRMS), member(CRM, CRM) ->
+	printLine,
+    writeln("crm ja cadastrado!"),
+	printLine,
+    nl;
+    assertz(medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico)),
+    printLine,
+    writeln("Medico cadastrado com sucesso!"),
+	printLine,
     adicionaMedico,
     fimMetodo.
+
+),
+
+get_crms_medico(CRMS) :-
+    findall(CRM, medico(_, _, CRM, _, _, _), CRMS).
+
 
 adicionaMedico:-
     bd_Medico,
     tell('./bd_Medico.pl'),  nl,
-    listing(medico/3),
+    listing(medico/6),
     told.
     
 listarMedico:- 
@@ -50,15 +81,15 @@ removeMedico:-
     fimMetodo.
 
 retornaListaDeMedicos(Lista):-
-    findall([Nome, Especialidade, Numero], medico(Nome, Especialidade, Numero), Lista).
+    findall([NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico], medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico).
 
 adicionaListaMedicos([]). 
 
-adicionaListaMedicos([[Nome, Especialidade, Numero] | T]):-
-    addMedico(Nome, Especialidade, Numero), adicionaListaMedicos(T).
+adicionaListaMedicos([[NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico] | T]):-
+    addMedico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico), adicionaListaMedicos(T).
 
-addMedico(Nome,Especialidade, Numero):-
-    assertz(medico(Nome, Especialidade, Numero)).
+addMedico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico):-
+    assertz(medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico)).
 
 removeMedicoAux([H|_], Nome, _) :-
     member(Nome, H),
