@@ -60,27 +60,56 @@ adicionaListaMedicos([[Nome, Especialidade, Numero] | T]):-
 addMedico(Nome,Especialidade, Numero):-
     assertz(medico(Nome, Especialidade, Numero)).
 
-    removeMedicoAux([H|_], Nome, _) :-
-        member(Nome, H),
-        !.
+removeMedicoAux([H|_], Nome, _) :-
+    member(Nome, H),
+    !.
     
-    removeMedicoAux([H|T], Nome, [H|Retorno]) :-
-        removeMedicoAux(T, Nome, Retorno).
+removeMedicoAux([H|T], Nome, [H|Retorno]) :-
+    removeMedicoAux(T, Nome, Retorno).
     
-    removeMedicoAux([], _, []) :-
-        nl, writeln("Medico inexistente"), nl.
+removeMedicoAux([], _, []) :-
+    nl, writeln("Medico inexistente"), nl.
 
 visualizarAgendamentos(Medico, List):-
     bd_Agendamento,
-    findall([Medico, Paciente, Horario, Status], agendamento(Medico, Paciente, Horario, Status), List),
+    findall([Id, Medico, Paciente, Horario, Status], agendamento(Id, Medico, Paciente, Horario, Status), List),
     told.
 
 visualizarAgendamentosPendentes(Medico, List) :-
     bd_Agendamento,
-    findall([Medico, Paciente, Horario, Status], (agendamento(Medico, Paciente, Horario, Status), Status == "Pendente"), List),
+    findall([Id, Medico, Paciente, Horario, Status], (agendamento(Id, Medico, Paciente, Horario, Status), Status == "Pendente"), List),
     told.
     
-        
+cancelaAgendamento(Medico):-
+    nl,
+	writeln("Digite o id da consulta a ser cancelada: "),
+    read_line_to_string(user_input, Id),
+    visualizarAgendamentosPendentes(Medico, Lista),
+    rejeitaAgendamento(Id, Lista, ListaAtual),
+    retractall(medico(_,_,_)),
+    adicionaListaAgendamento(ListaAtual),
+    tell('./bd_Agendamento.pl'),  nl,
+    listing(agendamento/4),
+    told,
+    fimMetodo.
+
+
+rejeitaAgendamento(Id, [H|T], [H| Ret]):- 
+    rejeitaAgendamento(Id, T, Ret).
+
+rejeitaAgendamento(Id, [H|_], _):-
+    member(Id, H), !.
+
+rejeitaAgendamento(_, [], []):-
+    nl, writeln("Agendamento inexistente"), nl.
+
+adicionaListaAgendamento([]). 
+
+adicionaListaAgendamento([[Id, Medico, Paciente, Horario] | T]):-
+    addAgendamento(Id, Medico, Paciente, Horario), adicionaListaAgendamento(T).
+    
+addAgendamento(Id, Medico, Paciente, Horario):-
+    assertz(agendamento(Id, Medico, Paciente, Horario)).
 
 fimMetodo:-
     writeln("Clique em enter para continuar: "),

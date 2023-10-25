@@ -1,5 +1,5 @@
-setup_bd_Paciente:- 
-	consult('./bd_Paciente.pl').
+setup_bd_Paciente :-
+    consult('./bd_Paciente.pl').
 
 printLine :-
     writeln("------------------------------------------------------------------------------------------------------------------------------------------").
@@ -54,14 +54,14 @@ cadastraPaciente :-
     fimMetodo.
 
 adicionaPaciente :-
-	setup_bd_Paciente,
-	tell('./bd_Paciente.pl'), 
-	nl,
-	listing(paciente/8),
-	told.
+    setup_bd_Paciente,
+    tell('./bd_Paciente.pl'),
+    nl,
+    listing(paciente/8),
+    told.
 
-get_emails_paciente(Emails) :- 
-	findall(Email, paciente(_,_,_,_,_,_,Email,_), Emails).
+get_emails_paciente(Emails) :-
+    findall(Email, paciente(_, _, _, _, _, _, Email, _), Emails).
 
 logarPaciente(Email) :-
 	printLine,
@@ -97,3 +97,62 @@ fimMetodo:-
 	writeln("Pressione enter para continuar: "),
 	read_line_to_string(user_input, _).
 
+listarPacientes :-
+    setup_bd_Paciente,
+    findall(N, paciente(N, _, _, _, _, _, _, _), ListaDePaciente),
+    exibirListaDePaciente(ListaDePaciente),
+    told,
+    fimMetodo.
+
+exibirListaDePaciente([H|T]) :-
+    writeln(H),
+    exibirListaDePaciente(T).
+
+exibirListaDePaciente([]).
+
+removePaciente :-
+    nl,
+    writeln("Insira o Nome do paciente a ser excluído: "),
+    read_line_to_string(user_input, Nome),
+    retornaListaDePaciente(Lista),
+    removePacienteAux(Lista, Nome, ListaAtualizada),
+    retractall(paciente(_, _, _, _, _, _, _, _)),
+    adicionaListaPaciente(ListaAtualizada),
+    tell('./bd_Paciente.pl'),
+    nl,
+    listing(paciente/8),
+    told,
+    fimMetodo.
+
+retornaListaDePaciente(Lista) :-
+    findall([Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha], paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha), Lista).
+
+adicionaListaPaciente([]).
+
+adicionaListaPaciente([[Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha] | T]) :-
+    addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha),
+    adicionaListaPaciente(T).
+
+addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha) :-
+    assertz(paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)).
+
+removePacienteAux([H|_], Nome, _) :-
+    member(Nome, H),
+    !.
+
+removePacienteAux([H|T], Nome, [H|Retorno]) :-
+    removePacienteAux(T, Nome, Retorno).
+
+removePacienteAux([], _, []) :-
+    nl, writeln("Paciente informado não existe!"), nl.
+
+criarAgendamento(Id, Medico, Paciente, Horario) :-
+    bd_Agendamento,
+    \+ agendamento(Id, Medico, Paciente, Horario, _),
+    assertz(agendamento(Id, Medico, Paciente, Horario, "Pendente")),
+    told,
+    writeln("Agendamento criado com sucesso!").
+
+fimMetodo :-
+    writeln("Clique em enter para continuar: "),
+    read_line_to_string(user_input, _).
