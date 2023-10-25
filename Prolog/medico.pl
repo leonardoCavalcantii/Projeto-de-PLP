@@ -3,6 +3,7 @@ bd_Agendamento:- consult('./bd_Agendamento').
 
 cadastraMedico:- 
     bd_Medico, nl,
+   nl, writeln("Digite seus dados: "),
     writeln("Digite seu nome: "),
     read_line_to_string(user_input, NomeMedico), nl,
 

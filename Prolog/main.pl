@@ -1,3 +1,10 @@
+:- include('./adm.pl').
+:- include('./agendamento.pl').
+:- include('./bd_Medico.pl').
+:- include('./bd_Paciente.pl').
+:- include('./medico.pl').
+:- include('./Paciente.pl').
+
 imprimirCliniSync :-
     writeln("                                                                                                                                          "),
     writeln("        CCCCCCCCCCCCClllllll   iiii                     iiii     SSSSSSSSSSSSSSS                                                          "),
