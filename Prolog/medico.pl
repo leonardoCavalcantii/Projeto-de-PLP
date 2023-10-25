@@ -1,51 +1,65 @@
-bd_Medico:- consult('./bd_Medico.pl').
-bd_Agendamento:- consult('./bd_Agendamento').
+setup_bd_Medico :- 
+    consult('./bd_Medico.pl').
+
+bd_Agendamento:- 
+    consult('./bd_Agendamento').
+
+printLine :-
+    writeln("------------------------------------------------------------------------------------------------------------------------------------------").
 
 arquivo_vazio :-
-	\+(predicate_property(medico(_,_,_,_,_,_), dynamic)).
+    \+(predicate_property(medico(_,_,_,_,_,_), dynamic)).
 
 
 cadastraMedico:- 
-    bd_Medico, nl,
-   nl, writeln("Digite seus dados: "),
-    
-    nl, writeln("Digite seu nome: "),
-    read_line_to_string(user_input, NomeMedico), nl,
-
-    nl, writeln("Digite sua especialidade: "),
-    read_line_to_string(user_input, Especialidade), nl,
-
-    nl, writeln("Digite seu crm: "),
-    read_line_to_string(user_input, CRM), nl,
-    
-    nl, writeln("Digite seu telefone: "),
-    read_line_to_string(user_input, NumeroMedico), nl,
-    
-    nl, writeln("Digite seu email: "),
-    read_line_to_string(user_input, EmailMedico), nl,
-
-    nl, writeln("Digite seu senha: "),
-    read_line_to_string(user_input, SenhaMedico), nl,
-
-    
-    
-    
-(get_crms_medico(CRMS), member(CRM, CRM) ->
-	printLine,
-    writeln("crm ja cadastrado!"),
-	printLine,
-    nl;
-    assertz(medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico)),
+    setup_bd_Medico,
     printLine,
-    writeln("Medico cadastrado com sucesso!"),
-	printLine,
-    adicionaMedico,
+    writeln("CADASTRO NOVO MEDICO"),
+    printLine,
+    writeln("Digite seus dados: "),
+    
+    nl, writeln("Nome: "),
+    read_line_to_string(user_input, NomeMedico),
+
+    nl, writeln("Especialidade: "),
+    read_line_to_string(user_input, Especialidade),
+
+    nl, writeln("CRM: "),
+    read_line_to_string(user_input, CRM),
+    
+    nl, writeln("Telefone de contato: "),
+    read_line_to_string(user_input, NumeroMedico),
+    
+    nl, writeln("email: "),
+    read_line_to_string(user_input, EmailMedico),
+
+    nl, writeln("Escolha sua senha: "),
+    read_line_to_string(user_input, SenhaMedico),
+
+    nl,
+    (get_emails_medico(Emails), member(Email, Emails) ->
+        printLine,
+        writeln("Email ja cadastrado!"),
+        printLine,
+        nl;
+        assertz(medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico)),
+        adicionaMedico,
+        printLine,
+        writeln("Medico cadastrado com sucesso!"),
+        printLine,
+        nl
+    ),
     fimMetodo.
 
-),
+adicionaMedico :-
+    setup_bd_Medico,
+    tell('./bd_Medico.pl'),
+    nl,
+    listing(medico/6),
+    told.
 
-get_crms_medico(CRMS) :-
-    findall(CRM, medico(_, _, CRM, _, _, _), CRMS).
+get_emails_medico(Emails) :-
+    findall(Email, medico(_, _, _, _, Email, _), Emails).
 
 
 adicionaMedico:-

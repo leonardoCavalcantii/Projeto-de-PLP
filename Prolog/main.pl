@@ -110,7 +110,7 @@ menuPaciente :-
 
 menuInPaciente(Email) :-
     printLine,
-    writeln("MENU DE INTERACAO DO PACIENTE"),
+    writeln("MENU DE INTERACAO PACIENTE"),
     printLine,
     writeln("1 - Agendar consulta"),
     writeln("2 - Visualizar agendamentos concluidos"),
@@ -122,15 +122,15 @@ menuInPaciente(Email) :-
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> (agendaConsultaPaciente(email), menuInPaciente(email));
-        Option == "2" -> (listaAgendamentosConcluidosPaciente(email), menuInPaciente(email));
-        Option == "3" -> (listaAgendamentosPendentesPaciente(email), menuInPaciente(email));
-        Option == "4" -> (visualizarPerfilMedico, menuInPaciente(email));
-        Option == "5" -> (remarcaAgendamentoPaciente, menuInPaciente(email));
-        Option == "6" -> (cancelaAgendamentoPaciente, menuInPaciente(email));
+        Option == "1" -> (agendaConsultaPaciente(Email), menuInPaciente(Email));
+        Option == "2" -> (listaAgendamentosConcluidosPaciente(Email), menuInPaciente(Email));
+        Option == "3" -> (listaAgendamentosPendentesPaciente(Email), menuInPaciente(Email));
+        Option == "4" -> (visualizarPerfilMedico, menuInPaciente(Email));
+        Option == "5" -> (remarcaAgendamentoPaciente, menuInPaciente(Email));
+        Option == "6" -> (cancelaAgendamentoPaciente, menuInPaciente(Email));
         Option == "0" -> (menuPaciente);
         opcaoInvalida,
-        menuInPaciente(email)
+        menuInPaciente(Email)
     ).
 
 
@@ -146,14 +146,14 @@ menuMedico :-
     read_line_to_string(user_input, Option),
     (
         Option == "1" -> (cadastraMedico, menuMedico);
-        Option == "2" -> (logarMedico(email), menuInMedico(email));
+        Option == "2" -> (logarMedico(Email) -> menuInMedico(Email); showMenu);
         Option == "3" -> (exibeContatoAdm, menuMedico);
         Option == "0" -> (showMenu);
         opcaoInvalida,
         menuMedico
     ).
 
-menuInMedico(email) :-
+menuInMedico(Email) :-
     printLine,
     writeln("MENU DE INTERACAO MEDICO"),
     printLine,
@@ -166,14 +166,14 @@ menuInMedico(email) :-
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> (listarAgendamentosMedico(email), menuInMedico(email));
-        Option == "2" -> (listarAgendamentosPendentesMedico(email), menuInMedico(email));
-        Option == "3" -> (cancelaAgendamentoMedico(email), menuInMedico(email));
-        Option == "4" -> (agendaHorarioMedico(email), menuInMedico(email));
-        Option == "5" -> (visualizarPerfilPaciente, menuInMedico(email));
+        Option == "1" -> (listarAgendamentosMedico(Email), menuInMedico(Email));
+        Option == "2" -> (listarAgendamentosPendentesMedico(Email), menuInMedico(Email));
+        Option == "3" -> (cancelaAgendamentoMedico(Email), menuInMedico(Email));
+        Option == "4" -> (agendaHorarioMedico(Email), menuInMedico(Email));
+        Option == "5" -> (visualizarPerfilPaciente, menuInMedico(Email));
         Option == "0" -> (menuMedico);
         opcaoInvalida,
-        menuInMedico(email)
+        menuInMedico(Email)
     ).
 
 opcaoInvalida :-
