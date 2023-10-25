@@ -1,56 +1,60 @@
-bd_Paciente:- 
+setup_bd_Paciente:- 
 	consult('./bd_Paciente.pl').
 
 printLine :-
     writeln("------------------------------------------------------------------------------------------------------------------------------------------").
 
-
 cadastraPaciente :-
-	bd_Paciente, nl,
-	printLine,
-	whiteln('CADASTRO NOVO PACIENTE')
-	printLine,
-	writeln("Digite seus dados: "),
+    setup_bd_Paciente,
+    printLine,
+    writeln("CADASTRO NOVO PACIENTE"),
+    printLine,
+    writeln("Digite seus dados: "),
 
-	writeln("nome: "),
-	read_line_to_string(user_input, Nome),
+    nl, writeln("Nome: "),
+    read_line_to_string(user_input, Nome),
 
-	writeln("cpf: "),
-	read_line_to_string(user_input, CPF),
+    nl, writeln("CPF: "),
+    read_line_to_string(user_input, CPF),
 
-	writeln("telefone: "),
-	read_line_to_string(user_input, Telefone),
+    nl, writeln("Telefone: "),
+    read_line_to_string(user_input, Telefone),
 
-	writeln("peso: "),
-	read_line_to_string(user_input, Peso),
+    nl, writeln("Peso: "),
+    read_line_to_string(user_input, Peso),
 
-	writeln("idade: "),
-	read_line_to_string(user_input, Idade),
+    nl, writeln("Idade: "),
+    read_line_to_string(user_input, Idade),
 
-	writeln("grupo sanguineo: "),
-	read_line_to_string(user_input, GP),
+    nl, writeln("Grupo Sanguineo: "),
+    read_line_to_string(user_input, GP),
 
-	writeln("email: "),
-	read_line_to_string(user_input, Email),
+    nl, writeln("Email: "),
+    read_line_to_string(user_input, Email),
 
-	writeln("senha: "),
-	read_line_to_string(user_input, Senha).
-	
-	nl,
-	(get_emails_clientes(Emails), member(Email, Emails) -> nl, writeln("Email ja cadastrado."), nl;
-	assertz(cliente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)),
-	adicionaPaciente,
-	writeln("Paciente cadastrado com sucesso!"),nl),
-	fimMetodo.
+    nl, writeln("Senha: "),
+    read_line_to_string(user_input, Senha),
+
+    nl,
+    (get_emails_paciente(Emails), member(Email, Emails) ->
+        writeln("Email ja cadastrado."),
+        nl;
+        assertz(paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)),
+        adicionaPaciente,
+        writeln("Paciente cadastrado com sucesso!"),
+        nl
+    ),
+    fimMetodo.
 
 adicionaPaciente :-
-	bd_Paciente,
-	tell('./bd_Paciente.pl'), nl,
-	listening(Paciente/8),
+	setup_bd_Paciente,
+	tell('./bd_Paciente.pl'), 
+	nl,
+	listing(paciente/8),
 	told.
 
 get_emails_paciente(Emails) :- 
-	findall(Email, paciente(_,Email,_,_), Emails).
+	findall(Email, paciente(_,_,_,_,_,_,Email,_), Emails).
 
 loginPaciente(Email) :-
 	nl,
