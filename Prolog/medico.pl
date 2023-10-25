@@ -60,7 +60,7 @@ adicionaMedico :-
 get_emails_medico(Emails) :-
     findall(Email, medico(_, _, _, _, Email, _), Emails).
     
-logarMedico(Email) :-
+logarMedico :-
     printLine,
 	writeln("LOGAR MEDICO"),
 	printLine,
@@ -71,23 +71,19 @@ logarMedico(Email) :-
 	writeln("Insira sua senha: "),
 	read_line_to_string(user_input, Senha),
 
-	(medico(_,_,_,_, Email, Senha) -> nl,
-	printLine, 
-	writeln("Login realizado com sucesso!"), nl;
-	printLine;
+	(medico(_,_,_,_, Email, Senha) -> nl, writeln("Login realizado com sucesso!"), nl;
 	writeln("Senha incorreta!"), nl, false).
 
-logar_Medico(Email) :-
+logar_Medico :-
 	setup_bd_Medico,
 	arquivo_vazio -> 
-	writeln("Medico nao cadastrado!"), 
-	nl, 
-	false;
-	(medico(_,_,_,_,_,_) -> 
-	logarMedico(Email);
-	writeln("Medico nao cadastrado!"), 
-	nl, 
-	false).
+        printLine,
+	    writeln("Medico nao cadastrado!"), 
+        printLine,
+	    nl, 
+	    false;
+	    (medico(_,_,_,_,_,_)) -> logarMedico;
+	    writeln("Medico nao cadastrado!"), nl, false.
 
 listarMedicos :- 
     setup_bd_Medico,

@@ -63,7 +63,7 @@ adicionaPaciente :-
 get_emails_paciente(Emails) :-
     findall(Email, paciente(_, _, _, _, _, _, Email, _), Emails).
 
-logarPaciente(Email) :-
+logarPaciente :-
 	printLine,
 	writeln("LOGAR PACIENTE"),
 	printLine,
@@ -74,23 +74,19 @@ logarPaciente(Email) :-
 	writeln("Insira sua senha: "),
 	read_line_to_string(user_input, Senha),
 
-	(paciente(_,_,_,_,_,_, Email, Senha) -> nl,
-	printLine, 
-	writeln("Login realizado com sucesso!"), nl;
-	printLine;
+	(paciente(_,_,_,_,_,_, Email, Senha) -> nl, writeln("Login realizado com sucesso!"), nl;
 	writeln("Senha incorreta!"), nl, false).
 
 logar_Paciente(Email) :-
 	setup_bd_Paciente,
 	arquivo_vazio -> 
-	writeln("Paciente nao cadastrado!"), 
-	nl, 
-	false;
-	(paciente(_,_,_,_,_,_,_,_) -> 
-	logarPaciente(Email);
-	writeln("Paciente nao cadastrado!"), 
-	nl, 
-	false).
+        printLine,
+	    writeln("Paciente nao cadastrado!"), 
+        printLine,
+	    nl, 
+	    false;
+	    (paciente(_,_,_,_,_,_,_,_)) -> logarPaciente;
+	    writeln("Paciente nao cadastrado!"), nl, false.
 
 
 listarPacientes :-

@@ -101,14 +101,14 @@ menuPaciente :-
     read_line_to_string(user_input, Option),
     (
         Option == "1" -> (cadastraPaciente, menuPaciente);
-        Option == "2" -> (logar_Paciente(Email) -> menuInPaciente(Email); showMenu);
+        Option == "2" -> (logarPaciente -> menuInPaciente; showMenu);
         Option == "3" -> (exibeContatoAdm, menuPaciente);
         Option == "0" -> (showMenu);
         opcaoInvalida,
         menuPaciente
     ).
 
-menuInPaciente(Email) :-
+menuInPaciente :-
     printLine,
     writeln("MENU DE INTERACAO PACIENTE"),
     printLine,
@@ -145,14 +145,14 @@ menuMedico :-
     read_line_to_string(user_input, Option),
     (
         Option == "1" -> (cadastraMedico, menuMedico);
-        Option == "2" -> (logarMedico(Email) -> menuInMedico(Email); showMenu);
+        Option == "2" -> (logarMedico -> menuInMedico; showMenu);
         Option == "3" -> (exibeContatoAdm, menuMedico);
         Option == "0" -> (showMenu);
         opcaoInvalida,
         menuMedico
     ).
 
-menuInMedico(Email) :-
+menuInMedico :-
     printLine,
     writeln("MENU DE INTERACAO MEDICO"),
     printLine,
