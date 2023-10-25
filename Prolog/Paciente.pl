@@ -56,21 +56,33 @@ adicionaPaciente :-
 get_emails_paciente(Emails) :-
     findall(Email, paciente(_, _, _, _, _, _, Email, _), Emails).
 
-loginPaciente(Email) :-
-    nl,
-    writeln("Insira seu email: "),
-    read_line_to_string(user_input, Email),
-    writeln("Insira sua senha: "),
-    read_line_to_string(user_input, Senha),
-    (cliente(_, Email, Senha, _) -> nl, writeln("Login realizado com sucesso!"), nl;
-        writeln("Senha incorreta."), nl, false).
-
-login_paciente(Email) :-
-    setup_bd_Paciente,
-    arquivo_vazio -> writeln("Paciente não cadastrado."), nl, false;
-    (paciente(_, _, _, _, _, _, Email, _) -> loginPaciente(Email);
-        writeln("Paciente não cadastrado."), nl, false),
-    fimMetodo.
+	logarPaciente(Email) :-
+		printLine,
+		writeln("LOGAR PACIENTE"),
+		printLine,
+		writeln("Insira seu email: "),
+		read_line_to_string(user_input, Email),
+		nl,
+		writeln("Insira sua senha: "),
+		read_line_to_string(user_input, Senha),
+		(paciente(,,,,,, Email, Senha) -> 
+		printLine, 
+		writeln("Login realizado com sucesso!");
+		writeln("Senha incorreta!"), 
+		false).
+	
+	logar_Paciente(Email) :-
+		setup_bd_Paciente,
+		arquivo_vazio -> 
+		writeln("Paciente nao cadastrado!"), 
+		nl, 
+		false;
+		(paciente(,,,,,,,) -> 
+		logarPaciente(Email);
+		writeln("Paciente não cadastrado!"), 
+		nl, 
+		false),
+		fimMetodo.
 
 fimMetodo :-
     writeln("Clique em enter para continuar: "),
@@ -125,10 +137,10 @@ removePacienteAux([H|T], Nome, [H|Retorno]) :-
 removePacienteAux([], _, []) :-
     nl, writeln("Paciente informado não existe!"), nl.
 
-criarAgendamento(Paciente, Medico, Horario) :-
+criarAgendamento(Id, Medico, Paciente, Horario) :-
     bd_Agendamento,
-    \+ agendamento(Medico, Paciente, Horario, _),
-    assertz(agendamento(Medico, Paciente, Horario, "Pendente")),
+    \+ agendamento(Id, Medico, Paciente, Horario, _),
+    assertz(agendamento(Id, Medico, Paciente, Horario, "Pendente")),
     told,
     writeln("Agendamento criado com sucesso!").
 
