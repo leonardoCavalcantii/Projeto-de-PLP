@@ -4,6 +4,9 @@ setup_bd_Paciente:-
 printLine :-
     writeln("------------------------------------------------------------------------------------------------------------------------------------------").
 
+arquivo_vazio :-
+	\+(predicate_property(paciente(_,_,_,_,_,_,_,_), dynamic)).
+
 cadastraPaciente :-
     setup_bd_Paciente,
     printLine,
@@ -37,11 +40,15 @@ cadastraPaciente :-
 
     nl,
     (get_emails_paciente(Emails), member(Email, Emails) ->
-        writeln("Email ja cadastrado."),
+		printLine,
+        writeln("Email ja cadastrado!"),
+		printLine,
         nl;
         assertz(paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)),
         adicionaPaciente,
+		printLine,
         writeln("Paciente cadastrado com sucesso!"),
+		printLine,
         nl
     ),
     fimMetodo.
@@ -56,23 +63,37 @@ adicionaPaciente :-
 get_emails_paciente(Emails) :- 
 	findall(Email, paciente(_,_,_,_,_,_,Email,_), Emails).
 
-loginPaciente(Email) :-
-	nl,
+logarPaciente(Email) :-
+	printLine,
+	writeln("LOGAR PACIENTE"),
+	printLine,
+	
 	writeln("Insira seu email: "),
 	read_line_to_string(user_input, Email),
+
 	writeln("Insira sua senha: "),
 	read_line_to_string(user_input, Senha),
-	(cliente(_, Email, Senha, _) -> nl, writeln("Login realizado com sucesso!"), nl;
-	writeln("Senha incorreta."), nl, false).
 
-login_paciente(Email) :-
-	setup_bd,
-	arquivo_vazio -> writeln("Paciente não cadastrado."), nl, false;
-	(paciente(_, _, _, _) -> loginPaciente(Email);
-	writeln("Paciente não cadastrado."), nl, false),
+	(paciente(_,_,_,_,_,_, Email, Senha) -> 
+	printLine, 
+	writeln("Login realizado com sucesso!"), 
+	printLine;
+	writeln("Senha incorreta!"), nl, false).
+
+logar_Paciente(Email) :-
+	setup_bd_Paciente,
+	arquivo_vazio -> 
+	writeln("Paciente nao cadastrado!"), 
+	nl, 
+	false;
+	(paciente(_,_,_,_,_,_,_,_) -> 
+	logarPaciente(Email);
+	writeln("Paciente não cadastrado!"), 
+	nl, 
+	false),
 	fimMetodo.
 
 fimMetodo:-
-	writeln("Clique em enter para continuar: "),
+	writeln("Pressione enter para continuar: "),
 	read_line_to_string(user_input, _).
 
