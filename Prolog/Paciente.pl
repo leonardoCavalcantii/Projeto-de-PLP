@@ -92,14 +92,15 @@ logar_Paciente(Email) :-
 	nl, 
 	false).
 
-fimMetodo:-
-	writeln("Pressione enter para continuar: "),
-	read_line_to_string(user_input, _).
 
 listarPacientes :-
     setup_bd_Paciente,
-    findall(N, paciente(N, _, _, _, _, _, _, _), ListaDePaciente),
+    printLine,
+    writeln("LISTA DE PACIENTES CADASTRADOS"),
+    printLine,
+    findall(Nome, paciente(Nome, _, _, _, _, _, _, _), ListaDePaciente),
     exibirListaDePaciente(ListaDePaciente),
+    printLine,
     told,
     fimMetodo.
 
@@ -152,6 +153,7 @@ criarAgendamento(Id, Medico, Paciente, Horario) :-
     told,
     writeln("Agendamento criado com sucesso!").
 
-fimMetodo :-
-    writeln("Clique em enter para continuar: "),
-    read_line_to_string(user_input, _).
+fimMetodo:-
+    printLine,
+	writeln("Pressione enter para continuar: "),
+	read_line_to_string(user_input, _).

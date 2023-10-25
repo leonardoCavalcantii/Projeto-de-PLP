@@ -10,7 +10,6 @@ printLine :-
 arquivo_vazio :-
     \+(predicate_property(medico(_,_,_,_,_,_), dynamic)).
 
-
 cadastraMedico:- 
     setup_bd_Medico,
     printLine,
@@ -60,18 +59,44 @@ adicionaMedico :-
 
 get_emails_medico(Emails) :-
     findall(Email, medico(_, _, _, _, Email, _), Emails).
-
-
-adicionaMedico:-
-    bd_Medico,
-    tell('./bd_Medico.pl'),  nl,
-    listing(medico/6),
-    told.
     
-listarMedico:- 
-    bd_Medico,
-    findall(N, medico(N,_,_), ListaDeMedicos), 
-    exibirListaDeMedicos(ListaDeMedicos), 
+logarMedico(Email) :-
+    printLine,
+	writeln("LOGAR MEDICO"),
+	printLine,
+	writeln("Insira seu email: "),
+	read_line_to_string(user_input, Email),
+
+	nl,
+	writeln("Insira sua senha: "),
+	read_line_to_string(user_input, Senha),
+
+	(medico(_,_,_,_, Email, Senha) -> nl,
+	printLine, 
+	writeln("Login realizado com sucesso!"), nl;
+	printLine;
+	writeln("Senha incorreta!"), nl, false).
+
+logar_Medico(Email) :-
+	setup_bd_Medico,
+	arquivo_vazio -> 
+	writeln("Medico nao cadastrado!"), 
+	nl, 
+	false;
+	(medico(_,_,_,_,_,_) -> 
+	logarMedico(Email);
+	writeln("Medico nao cadastrado!"), 
+	nl, 
+	false).
+
+listarMedicos :- 
+    setup_bd_Medico,
+    printLine,
+    writeln("LISTA DE MEDICOS CADASTRADOS"),
+    printLine,
+    findall(Nome, medico(Nome, _, _, _, _, _), ListaDeMedicos),
+    exibirListaDeMedicos(ListaDeMedicos),
+    printLine,
     told,
     fimMetodo.
 
@@ -95,7 +120,7 @@ removeMedico:-
     fimMetodo.
 
 retornaListaDeMedicos(Lista):-
-    findall([NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico], medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico).
+    findall([NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico], medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico), Lista).
 
 adicionaListaMedicos([]). 
 
