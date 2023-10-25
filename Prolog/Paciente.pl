@@ -67,16 +67,16 @@ logarPaciente(Email) :-
 	printLine,
 	writeln("LOGAR PACIENTE"),
 	printLine,
-	
 	writeln("Insira seu email: "),
 	read_line_to_string(user_input, Email),
 
+	nl,
 	writeln("Insira sua senha: "),
 	read_line_to_string(user_input, Senha),
 
-	(paciente(_,_,_,_,_,_, Email, Senha) -> 
+	(paciente(_,_,_,_,_,_, Email, Senha) -> nl,
 	printLine, 
-	writeln("Login realizado com sucesso!"), 
+	writeln("Login realizado com sucesso!"), nl;
 	printLine;
 	writeln("Senha incorreta!"), nl, false).
 
@@ -88,10 +88,9 @@ logar_Paciente(Email) :-
 	false;
 	(paciente(_,_,_,_,_,_,_,_) -> 
 	logarPaciente(Email);
-	writeln("Paciente não cadastrado!"), 
+	writeln("Paciente nao cadastrado!"), 
 	nl, 
-	false),
-	fimMetodo.
+	false).
 
 fimMetodo:-
 	writeln("Pressione enter para continuar: "),

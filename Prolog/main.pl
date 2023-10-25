@@ -52,7 +52,7 @@ showMenu :-
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> (login_adm -> menuAdm);
+        Option == "1" -> (logarAdm(Email, Senha) -> menuAdm(Email, Senha));
         Option == "2" -> (menuPaciente);
         Option == "3" -> (menuMedico);
         Option == "4" -> (sair);
@@ -60,7 +60,7 @@ showMenu :-
         showMenu, halt
     ).
 
-menuAdm :-
+menuAdm(Email) :-
     printLine,
     writeln("MENU ADMINISTRADOR"),
     printLine,
@@ -76,18 +76,18 @@ menuAdm :-
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> (listarPacientes, menuAdm);
-        Option == "2" -> (listarMedicos, menuAdm);
-        Option == "3" -> (removePaciente, menuAdm);
-        Option == "4" -> (removeMedico, menuAdm);
-        Option == "5" -> (alterarStatusAgendamento, menuAdm);
-        Option == "6" -> (listarResumoAgendamentos, menuAdm);
-        Option == "7" -> (atualizarAdm, menuAdm);
-        Option == "8" -> (listarAgendamentosPendentes, menuAdm);
+        Option == "1" -> (listarPacientes, menuAdm(Email));
+        Option == "2" -> (listarMedicos, menuAdm(Email));
+        Option == "3" -> (removePaciente, menuAdm(Email));
+        Option == "4" -> (removeMedico, menuAdm(Email));
+        Option == "5" -> (alterarStatusAgendamento, menuAdm(Email));
+        Option == "6" -> (listarResumoAgendamentos, menuAdm(Email));
+        Option == "7" -> (atualizarAdm, menuAdm(Email));
+        Option == "8" -> (listarAgendamentosPendentes, menuAdm(Email));
         Option == "0" -> (showMenu);
         opcaoInvalida,
-        menuAdm
-    ).
+        menuAdm(Email
+)    ).
 
 menuPaciente :-
     printLine,
@@ -101,7 +101,7 @@ menuPaciente :-
     read_line_to_string(user_input, Option),
     (
         Option == "1" -> (cadastraPaciente, menuPaciente);
-        Option == "2" -> (logarPaciente(Email) -> menuInPaciente(Email); showMenu);
+        Option == "2" -> (logar_Paciente(Email) -> menuInPaciente(Email); showMenu);
         Option == "3" -> (exibeContatoAdm, menuPaciente);
         Option == "0" -> (showMenu);
         opcaoInvalida,
