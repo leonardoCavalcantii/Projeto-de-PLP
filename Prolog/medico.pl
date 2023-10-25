@@ -36,7 +36,7 @@ cadastraMedico:-
     read_line_to_string(user_input, SenhaMedico),
 
     nl,
-    (get_emails_medico(Emails), member(Email, Emails) ->
+    (get_emails_medico(Emails), member(EmailMedico, Emails) ->
         printLine,
         writeln("Email ja cadastrado!"),
         printLine,
