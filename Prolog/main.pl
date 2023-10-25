@@ -160,7 +160,7 @@ menuInMedico(Email) :-
     writeln("1 - Visualizar agendamentos"),
     writeln("2 - Visualizar agendamentos pendentes"),
     writeln("3 - Cancelar agendamento"),
-    writeln("4 - Agendar horario para consulta")
+    writeln("4 - Agendar horario para consulta"),
     writeln("5 - Visualizar perfil de um paciente"),
     writeln("0 - Voltar"),
     writeln("\nSelecione uma opcao:"),
