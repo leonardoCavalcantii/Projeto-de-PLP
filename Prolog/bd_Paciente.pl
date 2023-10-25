@@ -1,6 +1,4 @@
 
 :- dynamic paciente/8.
 
-paciente("sara", "123.123.123-23", "83 99999-9999", "99", "99", "o-", "sara@email", "3131").
-paciente("leonardo", "12233445", "98090980", "140", "21", "A", "leo@migo.com", "dfuvbepwuirfgvbiuWEV").
-
+paciente("sara", "111.111.111-11", "83 11111-1111", "11", "11", "o-", "sara@email", "1111").
