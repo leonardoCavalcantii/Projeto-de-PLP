@@ -1,30 +1,53 @@
-bd_Paciente:- consult('./bd_Paciente.pl').
+bd_Paciente:- 
+	consult('./bd_Paciente.pl').
+
+printLine :-
+    writeln("------------------------------------------------------------------------------------------------------------------------------------------").
+
 
 cadastraPaciente :-
 	bd_Paciente, nl,
-	nl, writeln("Digite seus dados: "),
-	nl, writeln("nome: "),
+	printLine,
+	whiteln('CADASTRO NOVO PACIENTE')
+	printLine,
+	writeln("Digite seus dados: "),
+
+	writeln("nome: "),
 	read_line_to_string(user_input, Nome),
-	nl, writeln("cpf: "),
+
+	writeln("cpf: "),
 	read_line_to_string(user_input, CPF),
-	nl, writeln("telefone: "),
+
+	writeln("telefone: "),
 	read_line_to_string(user_input, Telefone),
-	nl, writeln("peso: "),
+
+	writeln("peso: "),
 	read_line_to_string(user_input, Peso),
-	nl, writeln("idade: "),
-	read_line_to_string(user_input, idade),
-	nl, writeln("grupo sanguineo: "),
-	read_line_to_string(user_input, Grupo_Sanguineo),
-	nl, writeln("email: "),
+
+	writeln("idade: "),
+	read_line_to_string(user_input, Idade),
+
+	writeln("grupo sanguineo: "),
+	read_line_to_string(user_input, GP),
+
+	writeln("email: "),
 	read_line_to_string(user_input, Email),
-	nl, writeln("senha: "),
+
+	writeln("senha: "),
 	read_line_to_string(user_input, Senha).
+	
 	nl,
-	(get_emails_clientes(Emails), member(Email, Emails) -> nl, writeln("Email já cadastrado."), nl;
-	assertz(cliente(Nome, Email, Senha, Telefone)),
-	adicionaCliente,
-	writeln("Cliente cadastrado com sucesso!"),nl),
+	(get_emails_clientes(Emails), member(Email, Emails) -> nl, writeln("Email ja cadastrado."), nl;
+	assertz(cliente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)),
+	adicionaPaciente,
+	writeln("Paciente cadastrado com sucesso!"),nl),
 	fimMetodo.
+
+adicionaPaciente :-
+	bd_Paciente,
+	tell('./bd_Paciente.pl'), nl,
+	listening(Paciente/8),
+	told.
 
 get_emails_paciente(Emails) :- 
 	findall(Email, paciente(_,Email,_,_), Emails).
