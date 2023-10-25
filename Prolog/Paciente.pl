@@ -1,7 +1,7 @@
-bd_Paciente:- consult('./Data/bd_Paciente.pl').
+bd_Paciente:- consult('./bd_Paciente.pl').
 
 cadastraPaciente :-
-	bd_Paciente, nl,,
+	bd_Paciente, nl,
 	nl, writeln("Digite seus dados: "),
 	nl, writeln("nome: "),
 	read_line_to_string(user_input, Nome),
