@@ -3,7 +3,7 @@
 
 medico("gustavo", "pediatria", "988688912").
 medico("antonio", "geriatria", "123456").
-medico("", "dr", "098765432").
+medico("Pedrita", "dr", "098765432").
 medico("paula", "pediatria.", "3456").
 medico("Pedro", "Odonto", "8765").
 

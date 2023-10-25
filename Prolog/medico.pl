@@ -1,4 +1,5 @@
 bd_Medico:- consult('./bd_Medico.pl').
+bd_Agendamento:- consult('./bd_Agendamento').
 
 cadastraMedico:- 
     bd_Medico, nl,
@@ -58,7 +59,7 @@ adicionaListaMedicos([[Nome, Especialidade, Numero] | T]):-
 addMedico(Nome,Especialidade, Numero):-
     assertz(medico(Nome, Especialidade, Numero)).
 
-    removeMedicoAux([H|T], Nome, Retorno) :-
+    removeMedicoAux([H|_], Nome, _) :-
         member(Nome, H),
         !.
     
@@ -67,6 +68,18 @@ addMedico(Nome,Especialidade, Numero):-
     
     removeMedicoAux([], _, []) :-
         nl, writeln("Medico inexistente"), nl.
+
+visualizarAgendamentos(Medico, List):-
+    bd_Agendamento,
+    findall([Medico, Paciente, Horario, Status], agendamento(Medico, Paciente, Horario, Status), List),
+    told.
+
+visualizarAgendamentosPendentes(Medico, List) :-
+    bd_Agendamento,
+    findall([Medico, Paciente, Horario, Status], (agendamento(Medico, Paciente, Horario, Status), Status == "Pendente"), List),
+    told.
+    
+        
 
 fimMetodo:-
     writeln("Clique em enter para continuar: "),
