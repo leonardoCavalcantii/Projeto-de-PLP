@@ -95,7 +95,7 @@ cancelaAgendamento(Medico):-
 
 
 rejeitaAgendamento(Id, [H|T], [H| Ret]):- 
-    rejeitaAgendamento(Id, T, Ret).
+    writeln(H), rejeitaAgendamento(Id, T, Ret).
 
 rejeitaAgendamento(Id, [H|_], _):-
     member(Id, H), !.
