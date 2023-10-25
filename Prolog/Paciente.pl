@@ -110,41 +110,31 @@ exibirListaDePaciente([H|T]) :-
 
 exibirListaDePaciente([]).
 
-removePaciente :-
+removePacienteEmail :-
+    setup_bd_Paciente,
+    printLine,
+    writeln("DESCADASTRAR PACIENTE"),
+    printLine,
+    writeln("Digite os dados: "),
+    nl, writeln("Email: "),
+    read_line_to_string(user_input, Email),
+
     nl,
-    writeln("Insira o Nome do paciente a ser excluído: "),
-    read_line_to_string(user_input, Nome),
-    retornaListaDePaciente(Lista),
-    removePacienteAux(Lista, Nome, ListaAtualizada),
-    retractall(paciente(_, _, _, _, _, _, _, _)),
-    adicionaListaPaciente(ListaAtualizada),
+    (
+        retractall(paciente(_, _, _, _, _, _, Email, _)),
+        removePaciente,
+		printLine,
+        writeln("Paciente removido com sucesso!"),
+		printLine,
+        nl
+    ),
+    fimMetodo.
+
+removePaciente :-
     tell('./bd_Paciente.pl'),
     nl,
     listing(paciente/8),
-    told,
-    fimMetodo.
-
-retornaListaDePaciente(Lista) :-
-    findall([Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha], paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha), Lista).
-
-adicionaListaPaciente([]).
-
-adicionaListaPaciente([[Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha] | T]) :-
-    addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha),
-    adicionaListaPaciente(T).
-
-addPaciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha) :-
-    assertz(paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha)).
-
-removePacienteAux([H|_], Nome, _) :-
-    member(Nome, H),
-    !.
-
-removePacienteAux([H|T], Nome, [H|Retorno]) :-
-    removePacienteAux(T, Nome, Retorno).
-
-removePacienteAux([], _, []) :-
-    nl, writeln("Paciente informado não existe!"), nl.
+    told.
 
 criarAgendamento(Id, Medico, Paciente, Horario) :-
     bd_Agendamento,

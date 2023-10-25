@@ -78,8 +78,8 @@ menuAdm :-
     (
         Option == "1" -> (listarPacientes, menuAdm);
         Option == "2" -> (listarMedicos, menuAdm);
-        Option == "3" -> (removePaciente, menuAdm);
-        Option == "4" -> (removeMedico, menuAdm);
+        Option == "3" -> (removePacienteEmail, menuAdm);
+        Option == "4" -> (removeMedicoEmail, menuAdm);
         Option == "5" -> (alterarStatusAgendamento, menuAdm);
         Option == "6" -> (listarResumoAgendamentos, menuAdm);
         Option == "7" -> (atualizarAdm, menuAdm);

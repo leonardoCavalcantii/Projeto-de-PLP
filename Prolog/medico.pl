@@ -106,39 +106,31 @@ exibirListaDeMedicos([H|T]):-
 
 exibirListaDeMedicos([]).
 
-removeMedico:-
+removeMedicoEmail:-
+    setup_bd_Medico,
+    printLine,
+    writeln("DESCADASTRAR MEDICO"),
+    printLine,
+    writeln("Digite os dados: "),
+    nl, writeln("Email: "),
+    read_line_to_string(user_input, Email),
+
     nl,
-	writeln("Insira o Nome do medico a ser excluido: "),
-    read_line_to_string(user_input, Nome),
-    retornaListaDeMedicos(Lista),
-    removeMedicoAux(Lista, Nome, ListaAtualizada),
-    retractall(medico(_,_,_)),
-    adicionaListaMedicos(ListaAtualizada),
-    tell('./bd_Medico.pl'),  nl,
-    listing(medico/3),
-    told,
+    (
+        retractall(medico(_, _, _, _, Email, _)),
+        removeMedico,
+		printLine,
+        writeln("Medico removido com sucesso!"),
+		printLine,
+        nl
+    ),
     fimMetodo.
 
-retornaListaDeMedicos(Lista):-
-    findall([NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico], medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico), Lista).
-
-adicionaListaMedicos([]). 
-
-adicionaListaMedicos([[NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico] | T]):-
-    addMedico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico), adicionaListaMedicos(T).
-
-addMedico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico):-
-    assertz(medico(NomeMedico, Especialidade, CRM, NumeroMedico, EmailMedico, SenhaMedico)).
-
-removeMedicoAux([H|_], Nome, _) :-
-    member(Nome, H),
-    !.
-    
-removeMedicoAux([H|T], Nome, [H|Retorno]) :-
-    removeMedicoAux(T, Nome, Retorno).
-    
-removeMedicoAux([], _, []) :-
-    nl, writeln("Medico inexistente"), nl.
+removeMedico :-
+    tell('./bd_Medico.pl'),
+    nl,
+    listing(medico/6),
+    told.
 
 visualizarAgendamentos(Medico, List):-
     bd_Agendamento,
@@ -162,7 +154,6 @@ cancelaAgendamento(Medico):-
     listing(agendamento/4),
     told,
     fimMetodo.
-
 
 rejeitaAgendamento(Id, [H|T], [H| Ret]):- 
     rejeitaAgendamento(Id, T, Ret).
