@@ -67,7 +67,12 @@ exibirAdm([[Nome, Email] | T]) :-
 exibirAdm([]).
 
 listarConsultaPendentes(List) :-
-    findall([Id, Medico, Paciente, Horario, Status], (consulta(Id, Medico, Paciente, Horario, Status), Status == "Pendente"), List).
+    setup_bd_Consulta,
+    findall([Id, Medico, Paciente, Horario, Status], (consulta(Id, Medico, Paciente, Email, Data, Horario, Status), Status == "Pendente"), List),
+    told.
+
+visualizarResumoConsulta(List):-
+    findall([Medico, Paciente, Horario], consulta(Id, Medico, Paciente, Email, Data, Horario, Status), List).
 
 fimMetodo:-
     writeln("Clique em enter para continuar: "),
