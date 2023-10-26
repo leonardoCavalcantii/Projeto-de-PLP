@@ -154,8 +154,8 @@ cancelaConsulta(Medico):-
 rejeitaConsulta(Id, [H|T], [H| Ret]):- 
     writeln(H), rejeitaConsulta(Id, T, Ret).
 
-rejeitaConsulta(Id, [H|_], _):-
-    member(Id, H), H = consulta.
+rejeitaAgendamento(Id, [H|_], _):-
+    member(Id, H), H = agendamento.
 
 rejeitaConsulta(_, [], []):-
     nl, writeln("Consulta inexistente"), nl.
