@@ -1,5 +1,5 @@
 :- include('./adm.pl').
-:- include('./agendamento.pl').
+:- include('./consultas.pl').
 :- include('./bd_Medico.pl').
 :- include('./bd_Paciente.pl').
 :- include('./medico.pl').
@@ -68,10 +68,10 @@ menuAdm :-
     writeln("2 - Ver medicos cadastrados no sistema"),
     writeln("3 - Remover paciente"),
     writeln("4 - Remover medico"),
-    writeln("5 - Alterar status de agendamento"),
-    writeln("6 - Listar resumo de agendamentos"),
+    writeln("5 - Alterar status da consulta"),
+    writeln("6 - Listar resumo de consultas"),
     writeln("7 - Atualizar contato Adm"),
-    writeln("8 - Visualizar agendamentos pendentes"),
+    writeln("8 - Visualizar consultas pendentes"),
     writeln("0 - voltar"),
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
@@ -80,10 +80,10 @@ menuAdm :-
         Option == "2" -> (listarMedicos, menuAdm);
         Option == "3" -> (removePacienteEmail, menuAdm);
         Option == "4" -> (removeMedicoEmail, menuAdm);
-        Option == "5" -> (alterarStatusAgendamento, menuAdm);
-        Option == "6" -> (listarResumoAgendamentos, menuAdm);
+        Option == "5" -> (alterarStatusConsulta, menuAdm);
+        Option == "6" -> (listarResumoConsulta, menuAdm);
         Option == "7" -> (atualizarAdm, menuAdm);
-        Option == "8" -> (listarAgendamentosPendentes, menuAdm);
+        Option == "8" -> (listarConsultaPendentes, menuAdm);
         Option == "0" -> (showMenu);
         opcaoInvalida,
         menuAdm
@@ -113,24 +113,24 @@ menuInPaciente :-
     writeln("MENU DE INTERACAO PACIENTE"),
     printLine,
     writeln("1 - Agendar consulta"),
-    writeln("2 - Visualizar agendamentos concluidos"),
-    writeln("3 - Visualizar agendamentos pendentes"),
+    writeln("2 - Visualizar consultas concluidas"),
+    writeln("3 - Visualizar consultas pendentes"),
     writeln("4 - Visualizar perfil de um medico"),
-    writeln("5 - remarcar agendamento"),
-    writeln("6 - cancelar agendamento"),
+    writeln("5 - remarcar consulta"),
+    writeln("6 - cancelar consulta"),
     writeln("0 - Voltar"),
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> (agendaConsultaPaciente(Email), menuInPaciente(Email));
-        Option == "2" -> (listaAgendamentosConcluidosPaciente(Email), menuInPaciente(Email));
-        Option == "3" -> (listaAgendamentosPendentesPaciente(Email), menuInPaciente(Email));
-        Option == "4" -> (visualizarPerfilMedico, menuInPaciente(Email));
-        Option == "5" -> (remarcaAgendamentoPaciente, menuInPaciente(Email));
-        Option == "6" -> (cancelaAgendamentoPaciente, menuInPaciente(Email));
+        Option == "1" -> (agendaConsultaPaciente, menuInPaciente);
+        Option == "2" -> (listaConsultasConcluidasPaciente, menuInPaciente);
+        Option == "3" -> (listaConsultasPendentesPaciente, menuInPaciente);
+        Option == "4" -> (visualizarPerfilMedico, menuInPaciente);
+        Option == "5" -> (remarcaConsultaPaciente, menuInPaciente);
+        Option == "6" -> (cancelaConsultaPaciente, menuInPaciente);
         Option == "0" -> (menuPaciente);
         opcaoInvalida,
-        menuInPaciente(Email)
+        menuInPaciente
     ).
 
 menuMedico :-
@@ -156,23 +156,23 @@ menuInMedico :-
     printLine,
     writeln("MENU DE INTERACAO MEDICO"),
     printLine,
-    writeln("1 - Visualizar agendamentos"),
-    writeln("2 - Visualizar agendamentos pendentes"),
-    writeln("3 - Cancelar agendamento"),
-    writeln("4 - Agendar horario para consulta"),
+    writeln("1 - Visualizar consultas"),
+    writeln("2 - Visualizar consultas pendentes"),
+    writeln("3 - Cancelar consulta"),
+    writeln("4 - Adicionar horario para consulta"),
     writeln("5 - Visualizar perfil de um paciente"),
     writeln("0 - Voltar"),
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> (listarAgendamentosMedico(Email), menuInMedico(Email));
-        Option == "2" -> (listarAgendamentosPendentesMedico(Email), menuInMedico(Email));
-        Option == "3" -> (cancelaAgendamentoMedico(Email), menuInMedico(Email));
-        Option == "4" -> (agendaHorarioMedico(Email), menuInMedico(Email));
-        Option == "5" -> (visualizarPerfilPaciente, menuInMedico(Email));
+        Option == "1" -> (listarConsultasMedico, menuInMedico);
+        Option == "2" -> (listarConsultasPendentesMedico, menuInMedico);
+        Option == "3" -> (cancelaConsultaMedico, menuInMedico);
+        Option == "4" -> (agendaHorarioMedico, menuInMedico);
+        Option == "5" -> (visualizarPerfilPaciente, menuInMedico);
         Option == "0" -> (menuMedico);
         opcaoInvalida,
-        menuInMedico(Email)
+        menuInMedico
     ).
 
 opcaoInvalida :-
