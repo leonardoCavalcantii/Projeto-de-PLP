@@ -1,4 +1,4 @@
-:- consult('./bd_Agendamento.pl').
+:- consult('./bd_Consultas.pl').
 :- consult('./bd_Medico.pl').
 :- consult('./bd_Paciente.pl').
 
@@ -8,8 +8,8 @@ printLine :-
 setup_bd_adm :-
 	consult('./bd_adm.pl').
 
-setup_bd_agendamento :-
-    consult('./bd_Agendamento.pl').
+setup_bd_Consulta :-
+    consult('./bd_Consultas.pl').
 
 setup_bd_medico :-
     consult('./bd_Medico.pl').

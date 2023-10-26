@@ -1,8 +1,8 @@
 setup_bd_Medico :- 
     consult('./bd_Medico.pl').
 
-bd_Agendamento:- 
-    consult('./bd_Agendamento').
+setup_bd_consulta:- 
+    consult('./bd_Consulta').
 
 printLine :-
     writeln("------------------------------------------------------------------------------------------------------------------------------------------").
@@ -128,45 +128,45 @@ removeMedico :-
     listing(medico/6),
     told.
 
-visualizarAgendamentos(Medico, List):-
-    bd_Agendamento,
-    findall([Id, Medico, Paciente, Horario, Status], agendamento(Id, Medico, Paciente, Horario, Status), List),
+visualizarConsultas(Medico, List):-
+    c,
+    findall([Id, Medico, Paciente, Horario, Status], consulta(Id, Medico, Paciente, Horario, Status), List),
     told.
 
-visualizarAgendamentosPendentes(Medico, List) :-
-    bd_Agendamento,
-    findall([Id, Medico, Paciente, Horario, Status], (agendamento(Id, Medico, Paciente, Horario, Status), Status == "Pendente"), List),
+visualizarConsultasPendentes(Medico, List) :-
+    c,
+    findall([Id, Medico, Paciente, Horario, Status], (consulta(Id, Medico, Paciente, Horario, Status), Status == "Pendente"), List),
     told.
     
-cancelaAgendamento(Medico):-
+cancelaConsulta(Medico):-
     nl,
 	writeln("Digite o id da consulta a ser cancelada: "),
     read_line_to_string(user_input, Id),
-    visualizarAgendamentosPendentes(Medico, Lista),
-    rejeitaAgendamento(Id, Lista, ListaAtual),
+    visualizarConsultasPendentes(Medico, Lista),
+    rejeitaConsulta(Id, Lista, ListaAtual),
     retractall(medico(_,_,_)),
-    adicionaListaAgendamento(ListaAtual),
-    tell('./bd_Agendamento.pl'),  nl,
-    listing(agendamento/4),
+    adicionaListaConsulta(ListaAtual),
+    tell('./bd_Consultas.pl'),  nl,
+    listing(consulta/4),
     told,
     fimMetodo.
 
-rejeitaAgendamento(Id, [H|T], [H| Ret]):- 
-    writeln(H), rejeitaAgendamento(Id, T, Ret).
+rejeitaConsulta(Id, [H|T], [H| Ret]):- 
+    writeln(H), rejeitaConsulta(Id, T, Ret).
 
 rejeitaAgendamento(Id, [H|_], _):-
-    member(Id, H), !.
+    member(Id, H), H = agendamento.
 
-rejeitaAgendamento(_, [], []):-
-    nl, writeln("Agendamento inexistente"), nl.
+rejeitaConsulta(_, [], []):-
+    nl, writeln("Consulta inexistente"), nl.
 
-adicionaListaAgendamento([]). 
+adicionaListaConsulta([]). 
 
-adicionaListaAgendamento([[Id, Medico, Paciente, Horario] | T]):-
-    addAgendamento(Id, Medico, Paciente, Horario), adicionaListaAgendamento(T).
+adicionaListaConsulta([[Id, Medico, Paciente, Horario] | T]):-
+    addConsulta(Id, Medico, Paciente, Horario), adicionaListaConsulta(T).
     
-addAgendamento(Id, Medico, Paciente, Horario):-
-    assertz(agendamento(Id, Medico, Paciente, Horario)).
+addConsulta(Id, Medico, Paciente, Horario):-
+    assertz(consulta(Id, Medico, Paciente, Horario)).
 
 fimMetodo:-
     writeln("Clique em enter para continuar: "),
