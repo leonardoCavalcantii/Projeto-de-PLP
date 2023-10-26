@@ -66,7 +66,7 @@ adicionaPaciente :-
 get_emails_paciente(Emails) :-
     findall(Email, paciente(_, _, _, _, _, _, Email, _), Emails).
 
-logarPaciente :-
+logarPaciente(Email) :-
 	printLine,
 	writeln("LOGAR PACIENTE"),
 	printLine,
@@ -88,7 +88,7 @@ logar_Paciente(Email) :-
         printLine,
 	    nl, 
 	    false;
-	    (paciente(_,_,_,_,_,_,_,_)) -> logarPaciente;
+	    (paciente(_,_,_,_,_,_,_,_)) -> logarPaciente(Email);
 	    writeln("Paciente nao cadastrado!"), nl, false.
 
 
@@ -108,6 +108,17 @@ exibirListaDePaciente([H|T]) :-
     exibirListaDePaciente(T).
 
 exibirListaDePaciente([]).
+
+listaConsultasConcluidasPaciente(Email) :-
+    setup_bd_consulta,
+    printLine,
+    writeln("LISTA DE CONSULTAS CONCLUIDAS"),
+    printLine,
+    findall([Id, Paciente, Email, Medico, Data, Horario, Status], consulta(Id, Medico, Paciente, Email, Data, Horario, "Concluida"), Consultas),
+    exibirConsultas(Consultas),
+    printLine,
+    told,
+    fimMetodo.
 
 removePacienteEmail :-
     setup_bd_Paciente,
@@ -134,50 +145,6 @@ removePaciente :-
     nl,
     listing(paciente/8),
     told.
-
-agendaConsultaPaciente :-
-    setup_bd_consulta,
-    printLine,
-    writeln("MARCAR NOVA CONSULTA"),
-    printLine,
-    writeln("Digite os dados: "),
-    
-    nl, writeln("Id: "),
-    read_line_to_string(user_input, Id),
-
-    nl, writeln("Medico: "),
-    read_line_to_string(user_input, Medico),
-
-    nl, writeln("Paciente: "),
-    read_line_to_string(user_input, Paciente),
-
-    nl, writeln("Horario: "),
-    read_line_to_string(user_input, Horario),
-
-    nl,
-    (get_ids_consultas(Ids), member(Id, Ids) ->
-        printLine,
-        writeln("Id ja cadastrado!"),
-        printLine,
-        nl;
-        assertz(consulta(Id, Medico, Paciente, Horario, "Pendente")),
-        adicionaConsulta,
-        printLine,
-        writeln("Consulta marcada com sucesso!"),
-        printLine,
-        nl
-    ),
-    fimMetodo.
-
-adicionaConsulta :-
-    setup_bd_consulta,
-    tell('./bd_Consultas.pl'),
-    nl,
-    listing(consulta/5),
-    told.
-
-get_ids_consultas(Ids) :-
-    findall(Id, consulta(Id, _, _, _, _), Ids).
    
 fimMetodo:-
     printLine,

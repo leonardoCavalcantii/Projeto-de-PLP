@@ -101,33 +101,33 @@ menuPaciente :-
     read_line_to_string(user_input, Option),
     (
         Option == "1" -> (cadastraPaciente, menuPaciente);
-        Option == "2" -> (logarPaciente -> menuInPaciente; showMenu);
+        Option == "2" -> (logarPaciente(Email) -> menuInPaciente(Email); showMenu);
         Option == "3" -> (exibeContatoAdm, menuPaciente);
         Option == "0" -> (showMenu);
         opcaoInvalida,
         menuPaciente
     ).
 
-menuInPaciente :-
+menuInPaciente(Email) :-
     printLine,
     writeln("MENU DE INTERACAO PACIENTE"),
     printLine,
-    writeln("1 - Agendar consulta"),
-    writeln("2 - Visualizar consultas concluidas"),
-    writeln("3 - Visualizar consultas pendentes"),
-    writeln("4 - Visualizar perfil de um medico"),
-    writeln("5 - remarcar consulta"),
-    writeln("6 - cancelar consulta"),
+    writeln("1 - Marcar consulta"),
+    writeln("2 - Remarcar consulta"),
+    writeln("3 - Desmarcar consulta"),
+    writeln("4 - Visualizar consultas concluidas"),
+    writeln("5 - Visualizar consultas pendentes"),
+    writeln("6 - Visualizar perfil de um medico"),
     writeln("0 - Voltar"),
     writeln("\nSelecione uma opcao:"),
     read_line_to_string(user_input, Option),
     (
-        Option == "1" -> (agendaConsultaPaciente, menuInPaciente);
-        Option == "2" -> (listaConsultasConcluidasPaciente, menuInPaciente);
-        Option == "3" -> (listaConsultasPendentesPaciente, menuInPaciente);
-        Option == "4" -> (visualizarPerfilMedico, menuInPaciente);
-        Option == "5" -> (remarcaConsultaPaciente, menuInPaciente);
-        Option == "6" -> (cancelaConsultaPaciente, menuInPaciente);
+        Option == "1" -> (agendaConsultaPaciente(Email), menuInPaciente(Email));
+        Option == "2" -> (remarcaConsultaPaciente(Email), menuInPaciente(Email));
+        Option == "3" -> (dermarcarConsultaPaciente(Email), menuInPaciente(Email));
+        Option == "4" -> (listaConsultasConcluidasPaciente(Email), menuInPaciente(Email));
+        Option == "5" -> (listaConsultasPendentesPaciente(Email), menuInPaciente(Email));
+        Option == "6" -> (visualizarPerfilMedico, menuInPaciente(Email));
         Option == "0" -> (menuPaciente);
         opcaoInvalida,
         menuInPaciente

@@ -2,7 +2,7 @@ setup_bd_Medico :-
     consult('./bd_Medico.pl').
 
 setup_bd_consulta:- 
-    consult('./bd_Consulta').
+    consult('./bd_Consultas').
 
 printLine :-
     writeln("------------------------------------------------------------------------------------------------------------------------------------------").
