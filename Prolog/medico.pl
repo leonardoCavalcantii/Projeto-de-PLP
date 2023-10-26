@@ -129,13 +129,13 @@ removeMedico :-
     told.
 
 visualizarConsultas(Medico, List):-
-    c,
-    findall([Id, Medico, Paciente, Horario, Status], consulta(Id, Medico, Paciente, Horario, Status), List),
+    setup_bd_consulta,
+    findall([Id, Medico, Paciente, Email, Data, Horario, Status], consulta(Id, Medico, Paciente, Email, Data, Horario, Status), List),
     told.
 
-visualizarConsultasPendentes(Medico, List) :-
-    c,
-    findall([Id, Medico, Paciente, Horario, Status], (consulta(Id, Medico, Paciente, Horario, Status), Status == "Pendente"), List),
+visualizarConsultasPendentes(Medico, List):-
+    setup_bd_consulta,
+    findall([Id, Medico, Paciente, Email, Data, Horario, Status], (consulta(Id, Medico, Paciente, Email, Data, Horario, Status), Status == "Pendente"), List),
     told.
     
 cancelaConsulta(Medico):-
