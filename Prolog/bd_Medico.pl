@@ -1,12 +1,8 @@
 
 :- dynamic medico/6.
-<<<<<<< HEAD
 %medico("Nome", "Especialidade", "CRM", "Numero", "Email", Senha).
 medico("Gustavo", "Pediatria", "12345678910", "98", "gustavo.costa@ccc.ufcg.edu.br", "1234").
 medico("Dr. Carlos", "Cardiologia", "12345", "1234567890", "carlos@example.com", "senha123").
-=======
-
->>>>>>> 2519d86ba6f536130a07f9077328e7714480de6f
 medico("Dra. Ana", "Dermatologia", "54321", "9876543210", "ana@example.com", "senha456").
 medico("Dr. Laura", "Ortopedia", "67890", "2468135790", "laura@example.com", "senha789").
 medico("Dra. Pedro", "Pediatria", "45678", "1357924680", "pedro@example.com", "senhaabc").
