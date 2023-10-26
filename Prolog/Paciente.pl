@@ -146,6 +146,17 @@ listaConsultasConcluidasPaciente(EmailPaciente) :-
     told,
     fimMetodo.
 
+listaConsultasPendentesPaciente(EmailPaciente) :-
+    setup_bd_consulta,
+    printLine,
+    writeln("LISTA DE CONSULTAS PENDENTES PACIENTE"),
+    printLine,
+    findall([Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status], consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, "Pendente"), Consultas),
+    exibirConsultas(Consultas),
+    printLine,
+    told,
+    fimMetodo.
+
 exibirConsultas([[Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status] | T]) :-
     write("Id: "),
     writeln(Id),
