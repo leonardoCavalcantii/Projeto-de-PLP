@@ -14,4 +14,3 @@ consulta("10", "Pedro", "Paciente10", "20:00", "Aprovado").
 consulta("11", "Gustavo", "Paciente11", "15:00", "Pendente").
 consulta("12", "Gustavo", "sara", "10:00", "Pendente").
 consulta("13", "Dr. Carlos", "sara", "22:00", "Pendente").
-

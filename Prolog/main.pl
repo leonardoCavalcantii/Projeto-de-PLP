@@ -4,6 +4,7 @@
 :- include('./bd_Paciente.pl').
 :- include('./medico.pl').
 :- include('./Paciente.pl').
+:- include('./horario.pl').
 
 imprimirCliniSync :-
     writeln("                                                                                                                                          "),
@@ -174,6 +175,25 @@ menuInMedico :-
         opcaoInvalida,
         menuInMedico
     ).
+
+agendaHorarioMedico:-
+    write("Digite o ano: "), 
+    read_line_to_string(user_input, AnoStr),
+    atom_number(AnoStr, Ano),
+    write("Digite o mês: "), 
+    read_line_to_string(user_input, MesStr),
+    atom_number(MesStr, Mes),
+    write("Digite o dia: "), 
+    read_line_to_string(user_input, DiaStr),
+    atom_number(DiaStr, Dia),
+    write("Digite a hora: "), 
+    read_line_to_string(user_input, HoraStr),
+    atom_number(HoraStr, Hora),
+    write("Digite o minuto: "), 
+    read_line_to_string(user_input, MinutoStr),
+    atom_number(MinutoStr, Minuto),
+    add_horario(Ano, Mes, Dia, Hora, Minuto),
+    writeln("~~nHorário adicionado com sucesso!").
 
 opcaoInvalida :-
 	 writeln("Opcao invalida!").

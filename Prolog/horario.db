@@ -1,0 +1,3 @@
+created(1698282183.15195).
+assert(horario(19,30,date(2023,10,25))).
+assert(horario(19,30,date(2023,10,24))).
