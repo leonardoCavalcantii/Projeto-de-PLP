@@ -126,6 +126,31 @@ remarcaConsultaPaciente(Email) :-
     printLine,
     fimMetodo.
 
+alterarStatusConsulta :-
+    setup_bd_consulta,
+    printLine,
+    writeln("ALTERAR STATUS CONSULTA"),
+    printLine,
+    writeln("Digite o ID da consulta que deseja alterar: "),
+    read_line_to_string(user_input, IdConsulta),
+    (
+        consulta(ID, Medico, EmailMedico, Paciente, Email, Data, Horario, _) ->
+            writeln("Digite o novo status: "),
+            read_line_to_string(user_input, NovoStatus),
+            
+            retractall(consulta(IdConsulta, _, _, _, _, _, _, _)),
+            removeConsulta,
+
+            assertz(consulta(IdConsulta, Medico, EmailMedico, Paciente, Email, Data, Horario, NovoStatus)),
+            adicionaConsulta,
+            nl,
+
+            writeln("Consulta alterada com sucesso!");
+        writeln("Nao foi possivel alterar a consulta. Certifique-se de que a consulta existe e esta pendente.")
+    ),
+    printLine,
+    fimMetodo.
+
 dermarcarConsultaPaciente(Email) :-
     setup_bd_consulta,
     printLine,
