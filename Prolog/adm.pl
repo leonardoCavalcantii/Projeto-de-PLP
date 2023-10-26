@@ -57,27 +57,52 @@ exibeContatoAdm :-
     fimMetodo.
 
 exibirAdm([[Nome, Email] | T]) :-
-    writeln("Nome administrador: "),
+    write("Nome administrador: "),
     writeln(Nome),
     nl,
-    writeln("Email administrador: "),
+    write("Email administrador: "),
     writeln(Email),
     exibirAdm(T).
 
 exibirAdm([]).
+
+atualizarAdm :-
+    setup_bd_adm,
+    printLine,
+    writeln("ATUALIZAR CONTATO ADMINISTRADOR"),
+    printLine,
+    writeln("Digite o novo nome do administrador: "),
+    read_line_to_string(user_input, NovoNome),
+
+    writeln("Digite o novo email do administrador: "),
+    read_line_to_string(user_input, NovoEmail),
+
+    writeln("Digite a nova senha do administrador: "),
+    read_line_to_string(user_input, NovaSenha),
+
+    retractall(administrador(_, _, _)),
+    assertz(administrador(NovoNome, NovoEmail, NovaSenha)),
+
+    tell('./bd_Adm.pl'),
+    nl,
+    listing(administrador/3),
+    told,
+
+    writeln("Contato do administrador atualizado com sucesso!"),
+    printLine.
 
 listarConsultaPendentes :-
 setup_bd_adm,
     printLine,
     writeln("CONSULTAS PENDENTES"),
     printLine,
-    findall([Id, Paciente, Email, Medico, Data, Horario, Status], consulta(Id, Medico, Paciente, Email, Data, Horario, "Pendente"), Consultas),
+    findall([Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status], consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, "Pendente"), Consultas),
     exibirConsulta(Consultas),
     printLine,
     told,
     fimMetodo.
 
-exibirConsulta([[Id, Medico, Paciente, Email, Data, Horario, Status] | T]) :-
+exibirConsulta([[Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status] | T]) :-
     write("Id: "),
     writeln(Id),
 
@@ -93,7 +118,8 @@ exibirConsulta([[Id, Medico, Paciente, Email, Data, Horario, Status] | T]) :-
     write("Horario: "),
     writeln(Horario),
     
-    printLine,
+    writeln("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x"),
+    nl,
     exibirConsulta(T).
 
 exibirConsulta([]).

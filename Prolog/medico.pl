@@ -60,7 +60,7 @@ adicionaMedico :-
 get_emails_medico(Emails) :-
     findall(Email, medico(_, _, _, _, Email, _), Emails).
     
-logarMedico :-
+logarMedico(Email) :-
     printLine,
 	writeln("LOGAR MEDICO"),
 	printLine,
@@ -74,7 +74,7 @@ logarMedico :-
 	(medico(_,_,_,_, Email, Senha) -> nl, writeln("Login realizado com sucesso!"), nl;
 	writeln("Senha incorreta!"), nl, false).
 
-logar_Medico :-
+logar_Medico(Email) :-
 	setup_bd_Medico,
 	arquivo_vazio -> 
         printLine,
@@ -128,47 +128,116 @@ removeMedico :-
     listing(medico/6),
     told.
 
-visualizarConsultas(Medico, List):-
+listarConsultasConcluidasMedico(EmailMedico) :-
     setup_bd_consulta,
-    findall([Id, Medico, Paciente, Email, Data, Horario, Status], consulta(Id, Medico, Paciente, Email, Data, Horario, Status), List),
-    told.
-
-visualizarConsultasPendentes(Medico, List):-
-    setup_bd_consulta,
-    findall([Id, Medico, Paciente, Email, Data, Horario, Status], (consulta(Id, Medico, Paciente, Email, Data, Horario, Status), Status == "Pendente"), List),
-    told.
-    
-cancelaConsulta(Medico):-
-    nl,
-	writeln("Digite o id da consulta a ser cancelada: "),
-    read_line_to_string(user_input, Id),
-    visualizarConsultasPendentes(Medico, Lista),
-    rejeitaConsulta(Id, Lista, ListaAtual),
-    retractall(medico(_,_,_)),
-    adicionaListaConsulta(ListaAtual),
-    tell('./bd_Consultas.pl'),  nl,
-    listing(consulta/4),
+    printLine,
+    writeln("LISTA DE CONSULTAS CONCLUIDAS MEDICO"),
+    printLine,
+    findall([Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status], consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, "Concluida"), Consultas),
+    exibirConsultas(Consultas),
+    printLine,
     told,
     fimMetodo.
 
-rejeitaConsulta(Id, [H|T], [H| Ret]):- 
-    writeln(H), rejeitaConsulta(Id, T, Ret).
+listarConsultasPendentesMedico(EmailMedico) :-
+    setup_bd_consulta,
+    printLine,
+    writeln("LISTA DE CONSULTAS CONCLUIDAS MEDICO"),
+    printLine,
+    findall([Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status], consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, "Pendente"), Consultas),
+    exibirConsultas(Consultas),
+    printLine,
+    told,
+    fimMetodo.
 
-rejeitaAgendamento(Id, [H|_], _):-
-    member(Id, H), H = agendamento.
+exibirConsultas([[Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status] | T]) :-
+    write("Id: "),
+    writeln(Id),
+    write("Medico: "),
+    writeln(Medico),
+    write("Data: "),
+    writeln(Data),
+    write("Horario: "),
+    writeln(Horario),
+    nl,
+    exibirConsultas(T).
 
-rejeitaConsulta(_, [], []):-
-    nl, writeln("Consulta inexistente"), nl.
+exibirConsultas([]).
 
-adicionaListaConsulta([]). 
+cancelaConsultaMedico(EmailMedico) :-
+    setup_bd_consulta,
+    printLine,
+    writeln("CANCELAR CONSULTA"),
+    printLine,
+    writeln("Digite o ID da consulta que deseja cancelar: "),
+    read_line_to_string(user_input, IdConsulta),
+    (
+        consulta(ID, Medico, EmailMedico, Paciente, Email, Data, Horario, _) ->
+            
+            retractall(consulta(IdConsulta, _, EmailMedico, _, _, _, _, _)),
+            removeConsulta,
 
-adicionaListaConsulta([[Id, Medico, Paciente, Horario] | T]):-
-    addConsulta(Id, Medico, Paciente, Horario), adicionaListaConsulta(T).
-    
-addConsulta(Id, Medico, Paciente, Horario):-
-    assertz(consulta(Id, Medico, Paciente, Horario)).
+            assertz(consulta(ID, Medico, EmailMedico, Paciente, Email, Data, Horario, "Cancelada")),
+            adicionaConsulta,
+            nl,
+
+            writeln("Consulta remarcada com sucesso!");
+        writeln("Nao foi possivel remarcar a consulta. Certifique-se de que a consulta existe e esta pendente.")
+    ),
+    printLine,
+    fimMetodo.
+
+adicionaConsulta :-
+    setup_bd_consulta,
+    tell('./bd_Consultas.pl'),
+    nl,
+    listing(consulta/8),
+    told.
+
+visualizarPerfilMedico :-
+    setup_bd_medico,
+    writeln("Digite o email do medico: "),
+    read_line_to_string(user_input, EmailMedico),
+    printLine,
+    writeln("PERFIL DO MEDICO"),
+    printLine,
+
+    (medico(Nome, Especialidade, CRM, Telefone, EmailMedico, Senha) ->
+         write("Nome: "),
+        writeln(Nome),
+        nl,
+        write("Especialidade: "),
+        writeln(Especialidade),
+        nl,
+        write("Telefone: "),
+        writeln(Telefone),
+        nl,
+        write("Email: "),
+        writeln(EmailMedico),
+        printLine;
+        writeln("Medico nao encontrado no sistema.")
+    ),
+    told,
+    fimMetodo.
+
+exibirMedico([[Nome, Especialidade, CRM, Telefone, Email, Senha] | T]) :-
+    write("Nome: "),
+    writeln(Nome),
+    nl,
+    write("Especialidade: "),
+    writeln(Especialidade),
+    nl,
+    write("Telefone: "),
+    writeln(Telefone),
+    nl,
+    write("Email: "),
+    writeln(Email),
+    exibirMedico(T).
+
+exibirMedico([]).
 
 fimMetodo:-
     writeln("Clique em enter para continuar: "),
     read_line_to_string(user_input, _).
+
 

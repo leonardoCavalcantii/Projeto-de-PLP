@@ -109,31 +109,6 @@ exibirListaDePaciente([H|T]) :-
 
 exibirListaDePaciente([]).
 
-listaConsultasConcluidasPaciente(Email) :-
-    setup_bd_consulta,
-    printLine,
-    writeln("LISTA DE CONSULTAS CONCLUIDAS"),
-    printLine,
-    findall([Id, Paciente, Email, Medico, Data, Horario, Status], consulta(Id, Medico, Paciente, Email, Data, Horario, "Concluida"), Consultas),
-    exibirConsultas(Consultas),
-    printLine,
-    told,
-    fimMetodo.
-
-exibirConsultas([[Id, Paciente, Email, Medico, Data, Horario, Status] | T]) :-
-    write("Id: "),
-    writeln(Id),
-    write("Medico: "),
-    writeln(Medico),
-    write("Data: "),
-    writeln(Data),
-    write("Horario: "),
-    writeln(Horario),
-    nl,
-    exibirConsultas(T).
-
-exibirConsultas([]).
-
 removePacienteEmail :-
     setup_bd_Paciente,
     printLine,
@@ -159,7 +134,67 @@ removePaciente :-
     nl,
     listing(paciente/8),
     told.
-   
+
+listaConsultasConcluidasPaciente(Email) :-
+    setup_bd_consulta,
+    printLine,
+    writeln("LISTA DE CONSULTAS CONCLUIDAS PACIENTE"),
+    printLine,
+    findall([Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status], consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, "Concluida"), Consultas),
+    exibirConsultas(Consultas),
+    printLine,
+    told,
+    fimMetodo.
+
+exibirConsultas([[Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status] | T]) :-
+    write("Id: "),
+    writeln(Id),
+    write("Medico: "),
+    writeln(Medico),
+    write("Data: "),
+    writeln(Data),
+    write("Horario: "),
+    writeln(Horario),
+    nl,
+    exibirConsultas(T).
+
+exibirConsultas([]).
+
+visualizarPerfilPaciente :-
+    setup_bd_Paciente,
+    writeln("Digite o email do paciente: "),
+    read_line_to_string(user_input, EmailPaciente),
+    printLine,
+    writeln("PERFIL DO PACIENTE"),
+    printLine,
+
+    (paciente(Nome, CPF, Telefone, Peso, Idade, GP, Email, Senha) ->
+        write("Nome: "),
+        writeln(Nome),
+        nl,
+        write("CPF: "),
+        writeln(CPF),
+        nl,
+        write("Telefone: "),
+        writeln(Telefone),
+        nl,
+        write("Peso: "),
+        writeln(Peso),
+        nl,
+        write("Idade: "),
+        writeln(Idade),
+        nl,
+        write("Grupo Sanguineo: "),
+        writeln(GP),
+        nl,
+        write("Email: "),
+        writeln(Email),
+        printLine;
+        writeln("Paciente nao encontrado no sistema.")
+    ),
+    told,
+    fimMetodo.
+
 fimMetodo:-
     printLine,
 	writeln("Pressione enter para continuar: "),

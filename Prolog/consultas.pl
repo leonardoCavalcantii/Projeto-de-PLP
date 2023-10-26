@@ -17,6 +17,9 @@ agendaConsultaPaciente(EmailPaciente) :-
     nl, writeln("Medico: "),
     read_line_to_string(user_input, Medico),
 
+    nl, writeln("Email do medico: "),
+    read_line_to_string(user_input, EmailMedico),
+
     nl, writeln("Paciente: "),
     read_line_to_string(user_input, Paciente),
 
@@ -32,7 +35,7 @@ agendaConsultaPaciente(EmailPaciente) :-
         writeln("Id ja cadastrado!"),
         printLine,
         nl;
-        assertz(consulta(Id, Medico, Paciente, EmailPaciente, Data, Horario, "Pendente")),
+        assertz(consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, "Pendente")),
         adicionaConsulta,
         printLine,
         writeln("Consulta marcada com sucesso!"),
@@ -45,33 +48,51 @@ adicionaConsulta :-
     setup_bd_consulta,
     tell('./bd_Consultas.pl'),
     nl,
-    listing(consulta/7),
+    listing(consulta/8),
     told.
 
 get_ids_consultas(Ids) :-
-    findall(Id, consulta(Id, _, _, _, _, _, _), Ids).
+    findall(Id, consulta(Id, _, _, _, _, _, _, _), Ids).
    
+listarResumoConsultas :-
+    setup_bd_consulta,
+    printLine,
+    writeln("RESUMO DE CONSULTAS"),
+    printLine,
+    findall([Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status], consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status), Consultas),
+    exibirConsultas(Consultas),
+    printLine,
+    told,
+    fimMetodo.
 
 listaConsultasPendentesPaciente(Email) :-
     setup_bd_consulta,
     printLine,
     writeln("LISTA DE CONSULTAS PENDENTES"),
     printLine,
-    findall([Id, Paciente, Email, Medico, Data, Horario, Status], consulta(Id, Medico, Paciente, Email, Data, Horario, "Pendente"), Consultas),
+    findall([Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status], consulta(Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, "Pendente"), Consultas),
     exibirConsultas(Consultas),
     printLine,
     told,
     fimMetodo.
 
-exibirConsultas([[Id, Paciente, Email, Medico, Data, Horario, Status] | T]) :-
+exibirConsultas([[Id, Medico, EmailMedico, Paciente, EmailPaciente, Data, Horario, Status] | T]) :-
     write("Id: "),
     writeln(Id),
+
     write("Medico: "),
     writeln(Medico),
+
     write("Data: "),
     writeln(Data),
+
     write("Horario: "),
     writeln(Horario),
+
+    write("Status: "),
+    writeln(Status),
+
+    writeln("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x"),
     nl,
     exibirConsultas(T).
 
@@ -83,22 +104,22 @@ remarcaConsultaPaciente(Email) :-
     writeln("REMARCAR CONSULTA"),
     printLine,
     writeln("Digite o ID da consulta que deseja remarcar: "),
-    read_line_to_string(user_input, ID),
+    read_line_to_string(user_input, IdConsulta),
     (
-        consulta(ID, Paciente, Medico, Email, _, _, "Pendente") ->
+        consulta(ID, Medico, EmailMedico, Paciente, Email, _, _, "Pendente") ->
             writeln("Digite a nova data da consulta (formato dd/mm/yyyy): "),
             read_line_to_string(user_input, NovaData),
 
             writeln("Digite o novo horario da consulta (hh:mm): "),
             read_line_to_string(user_input, NovoHorario),
+            
+            retractall(consulta(IdConsulta, _, _, _, Email, _, _, _)),
+            removeConsulta,
 
-            % Remova a consulta anterior
-            retract(consulta(ID, Paciente, Medico, Email, _, _, "Pendente")),
-            
-            % Adicione a consulta atualizada
-            assertz(consulta(ID, Paciente, Medico, Email, NovaData, NovoHorario, "Pendente")),
+            assertz(consulta(IdConsulta, Medico, EmailMedico, Paciente, Email, NovaData, NovoHorario, "Pendente")),
             adicionaConsulta,
-            
+            nl,
+
             writeln("Consulta remarcada com sucesso!");
         writeln("Nao foi possivel remarcar a consulta. Certifique-se de que a consulta existe e esta pendente.")
     ),
@@ -116,7 +137,7 @@ dermarcarConsultaPaciente(Email) :-
 
     nl,
     (
-        retractall(consulta(Id, _, _, Email, _, _, _)),
+        retractall(consulta(Id, _, _, _, Email, _, _, _)),
         removeConsulta,
 		printLine,
         writeln("Consulta desmarcada com sucesso!"),
@@ -128,7 +149,7 @@ dermarcarConsultaPaciente(Email) :-
 removeConsulta :-
     tell('./bd_Consultas.pl'),
     nl,
-    listing(consulta/7),
+    listing(consulta/8),
     told.
 
 fimMetodo:-
