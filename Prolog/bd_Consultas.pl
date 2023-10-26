@@ -14,5 +14,3 @@ consulta("10", "Paula", "sara", "sara@email", "30/11/2023", "11:45", "Pendente")
 consulta("11", "Pedrita", "sara", "sara@email", "01/12/2023", "14:00", "Pendente").
 consulta("12", "Gustavo", "sara", "sara@email", "02/12/2023", "10:30", "Concluida").
 consulta("13", "Pedro", "sara", "sara@email", "03/12/2023", "13:15", "Concluida").
-consulta("1", "Gustavo", "sara", "sara@email", "22/11/2023", "14:00", "Pendente").
-
