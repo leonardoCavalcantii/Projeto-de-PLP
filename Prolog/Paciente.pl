@@ -135,7 +135,7 @@ removePaciente :-
     listing(paciente/8),
     told.
 
-listaConsultasConcluidasPaciente(Email) :-
+listaConsultasConcluidasPaciente(EmailPaciente) :-
     setup_bd_consulta,
     printLine,
     writeln("LISTA DE CONSULTAS CONCLUIDAS PACIENTE"),
