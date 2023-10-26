@@ -66,6 +66,38 @@ exibirAdm([[Nome, Email] | T]) :-
 
 exibirAdm([]).
 
+listarConsultaPendentes :-
+setup_bd_adm,
+    printLine,
+    writeln("CONSULTAS PENDENTES"),
+    printLine,
+    findall([Id, Paciente, Email, Medico, Data, Horario, Status], consulta(Id, Medico, Paciente, Email, Data, Horario, "Pendente"), Consultas),
+    exibirConsulta(Consultas),
+    printLine,
+    told,
+    fimMetodo.
+
+exibirConsulta([[Id, Medico, Paciente, Email, Data, Horario, Status] | T]) :-
+    write("Id: "),
+    writeln(Id),
+
+    write("Nome medico: "),
+    writeln(Medico),
+
+    write("Nome paciente: "),
+    writeln(Paciente),
+
+    write("Data: "),
+    writeln(Data),
+
+    write("Horario: "),
+    writeln(Horario),
+    
+    printLine,
+    exibirConsulta(T).
+
+exibirConsulta([]).
+
 fimMetodo:-
     writeln("Clique em enter para continuar: "),
     read_line_to_string(user_input, _).

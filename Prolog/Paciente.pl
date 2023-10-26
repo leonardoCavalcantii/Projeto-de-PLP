@@ -120,6 +120,20 @@ listaConsultasConcluidasPaciente(Email) :-
     told,
     fimMetodo.
 
+exibirConsultas([[Id, Paciente, Email, Medico, Data, Horario, Status] | T]) :-
+    write("Id: "),
+    writeln(Id),
+    write("Medico: "),
+    writeln(Medico),
+    write("Data: "),
+    writeln(Data),
+    write("Horario: "),
+    writeln(Horario),
+    nl,
+    exibirConsultas(T).
+
+exibirConsultas([]).
+
 removePacienteEmail :-
     setup_bd_Paciente,
     printLine,
