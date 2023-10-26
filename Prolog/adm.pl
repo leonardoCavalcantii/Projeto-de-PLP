@@ -66,6 +66,9 @@ exibirAdm([[Nome, Email] | T]) :-
 
 exibirAdm([]).
 
+listarConsultaPendentes(List) :-
+    findall([Id, Medico, Paciente, Horario, Status], (consulta(Id, Medico, Paciente, Horario, Status), Status == "Pendente"), List).
+
 fimMetodo:-
     writeln("Clique em enter para continuar: "),
     read_line_to_string(user_input, _).
