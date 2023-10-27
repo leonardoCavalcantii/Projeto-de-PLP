@@ -1,10 +1,8 @@
 
 :- dynamic consulta/8.
 
-consulta("2", "Dr. Joao", "joao@example.com", "lucas", "lucas@email", "28/10/2023", "17:00", "Pendente").
-consulta("3", "Dr. Joao", "joao@example.com", "carla", "carla@email", "28/10/2023", "17:00", "Concluido").
-consulta("4", "Dr. Joao", "joao@example.com", "julia", "julia@email", "28/10/2023", "17:00", "Pendente").
-consulta("5", "Dr. Joao", "joao@example.com", "manuel", "manuel@email", "28/10/2023", "17:00", "Pendente").
-consulta("6", "Dr. Joao", "joao@example.com", "alex", "alex@email", "28/10/2023", "17:00", "Pendente").
-consulta("1", "Dr. Joao", "joao@example.com", "alex", "alex@email", "28/10/2023", "17:00", "Concluida").
+consulta(1, "Gustavo", "gustavo.costa@ccc.ufcg.edu.br", "sara", "sara@email", "30/10/2023", "10:00", "Concluida").
+consulta(2, "Dr. Joao", "joao@email.com", "Sara", "sara@email", "22/01/2023", "12:00", "Pendente").
+consulta(3, "Dra. Ana", "ana@example.com", "Sara", "sara@email", "01/01/2022", "09:15", "Pendente").
+consulta("3", "Dr. Joao", "joao@email.com", "Sara", "sara@email", "01/01/2024", "09:15", "Pendente").
 

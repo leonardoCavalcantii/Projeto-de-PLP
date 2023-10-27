@@ -8,7 +8,7 @@ printLine :-
     writeln("------------------------------------------------------------------------------------------------------------------------------------------").
 
 arquivo_vazio :-
-	\+(predicate_property(horario(_,_,_,_), dynamic)).
+	\+(predicate_property(horario(_,_,_,_,_), dynamic)).
 
 agendarHorarioMedico(Email) :-
   setup_bd_Horario,
@@ -17,8 +17,7 @@ agendarHorarioMedico(Email) :-
     printLine,
     writeln("Digite os dados: "),
 
-    nl, writeln("Id: "),
-    read_line_to_string(user_input, Id),
+    get_next_id(Id),
 
     nl, writeln("Data: "),
     read_line_to_string(user_input, Data),
@@ -32,7 +31,7 @@ agendarHorarioMedico(Email) :-
         writeln("Id ja cadastrado!"),
 		printLine,
         nl;
-        assertz(horario(Id, Email, Data, Hora)),
+        assertz(horario(Id, Email, Data, Hora, "Disponivel")),
         adicionaHorario,
 		printLine,
         writeln("Horario cadastrado com sucesso!"),
@@ -45,11 +44,19 @@ adicionaHorario :-
     setup_bd_Horario,
     tell('./bd_Horario.pl'),
     nl,
-    listing(horario/4),
+    listing(horario/5),
     told.
 
 get_ids_horarios(Ids):-
-    findall(Id, horario(Id, _, _, _), Ids).
+    findall(Id, horario(Id, _, _, _, _), Ids).
+
+find_largest_id(MaxID) :-
+    findall(ID, horario(ID, _, _, _, _), IDs),
+    (max_list(IDs, MaxID) -> true ; MaxID is 0).
+
+get_next_id(NextID) :-
+    find_largest_id(LargestID),
+    NextID is LargestID + 1.
 
 removerHorarioMedico :-
     setup_bd_Horario,
@@ -59,10 +66,11 @@ removerHorarioMedico :-
     writeln("Digite os dados: "),
     nl, writeln("Id do horario: "),
     read_line_to_string(user_input, Id),
+    number_string(IdHorario, Id),
 
     nl,
     (
-        retractall(horario(Id, _, _, _)),
+        retractall(horario(IdHorario, _, _, _, _)),
         removeHorario,
 		printLine,
         writeln("Horario removido com sucesso!"),
@@ -74,7 +82,7 @@ removerHorarioMedico :-
 removeHorario :-
     tell('./bd_Horario.pl'),
     nl,
-    listing(horario/4),
+    listing(horario/5),
     told.
   
 visualizarHorariosMedico :-
@@ -84,7 +92,7 @@ visualizarHorariosMedico :-
     printLine,
     writeln("HORARIOS MEDICO"),
     printLine,
-    findall([Id, EmailMedico, Data, Horario], horario(Id, EmailMedico, Data, Horario), Horarios),
+    findall([Id, EmailMedico, Data, Horario, Status], horario(Id, EmailMedico, Data, Horario, Status), Horarios),
     exibirHorarios(Horarios),
     printLine,
     told,
@@ -94,24 +102,24 @@ visualizarHorariosMedico(EmailMedico) :-
     printLine,
     writeln("HORARIOS MEDICO"),
     printLine,
-    findall([Id, EmailMedico, Data, Horario], horario(Id, EmailMedico, Data, Horario), Horarios),
+    findall([Id, EmailMedico, Data, Horario, Status], horario(Id, EmailMedico, Data, Horario, Status), Horarios),
     exibirHorarios(Horarios),
     printLine,
     told,
     fimMetodo.
 
-exibirHorarios([[Id, EmailMedico, Data, Horario] | T]) :-
+exibirHorarios([[Id, EmailMedico, Data, Horario, Status] | T]) :-
     write("Id: "),
     writeln(Id),
-
-    write("Email Medico: "),
-    writeln(EmailMedico),
 
     write("Data: "),
     writeln(Data),
 
     write("Horario: "),
     writeln(Horario),
+
+    write("Status: "),
+    writeln(Status),
 
     writeln("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x"),
     nl,

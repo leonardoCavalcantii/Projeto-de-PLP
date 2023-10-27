@@ -170,7 +170,9 @@ cancelaConsultaMedico(EmailMedico) :-
     writeln("CANCELAR CONSULTA"),
     printLine,
     writeln("Digite o ID da consulta que deseja cancelar: "),
-    read_line_to_string(user_input, IdConsulta),
+    read_line_to_string(user_input, Id),
+    number_string(IdHorario, Id),
+
     (
         consulta(ID, Medico, EmailMedico, Paciente, Email, Data, Horario, _) ->
             

@@ -1,5 +1,5 @@
 
 :- dynamic administrador/3.
 
-administrador("Sara", "sara@email", "3131").
+administrador("Seu Firmino", "firmino@email", "1111").
 

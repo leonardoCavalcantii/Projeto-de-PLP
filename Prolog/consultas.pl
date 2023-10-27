@@ -11,8 +11,7 @@ agendaConsultaPaciente(EmailPaciente) :-
     printLine,
     writeln("Digite os dados: "),
     
-    nl, writeln("Id: "),
-    read_line_to_string(user_input, Id),
+    get_next_id(Id),
 
     nl, writeln("Medico: "),
     read_line_to_string(user_input, Medico),
@@ -53,7 +52,15 @@ adicionaConsulta :-
 
 get_ids_consultas(Ids) :-
     findall(Id, consulta(Id, _, _, _, _, _, _, _), Ids).
-   
+
+find_largest_id(MaxID) :-
+    findall(ID, consulta(ID, _, _, _, _, _, _, _), IDs),
+    (max_list(IDs, MaxID) -> true ; MaxID is 0).
+
+get_next_id(NextID) :-
+    find_largest_id(LargestID),
+    NextID is LargestID + 1.
+
 listarResumoConsultas :-
     setup_bd_consulta,
     printLine,
@@ -104,7 +111,9 @@ remarcaConsultaPaciente(Email) :-
     writeln("REMARCAR CONSULTA"),
     printLine,
     writeln("Digite o ID da consulta que deseja remarcar: "),
-    read_line_to_string(user_input, IdConsulta),
+    read_line_to_string(user_input, Id),
+    number_string(IdConsulta, Id),
+
     (
         consulta(ID, Medico, EmailMedico, Paciente, Email, _, _, "Pendente") ->
             writeln("Digite a nova data da consulta (formato dd/mm/yyyy): "),
@@ -132,7 +141,9 @@ alterarStatusConsulta :-
     writeln("ALTERAR STATUS CONSULTA"),
     printLine,
     writeln("Digite o ID da consulta que deseja alterar: "),
-    read_line_to_string(user_input, IdConsulta),
+    read_line_to_string(user_input, Id),
+    number_string(IdConsulta, Id),
+
     (
         consulta(ID, Medico, EmailMedico, Paciente, Email, Data, Horario, _) ->
             writeln("Digite o novo status: "),
@@ -159,10 +170,11 @@ dermarcarConsultaPaciente(Email) :-
     writeln("Digite os dados: "),
     nl, writeln("Id da consulta: "),
     read_line_to_string(user_input, Id),
+    number_string(IdConsulta, Id),
 
     nl,
     (
-        retractall(consulta(Id, _, _, _, Email, _, _, _)),
+        retractall(consulta(IdConsulta, _, _, _, Email, _, _, _)),
         removeConsulta,
 		printLine,
         writeln("Consulta desmarcada com sucesso!"),
